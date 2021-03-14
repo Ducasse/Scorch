@@ -90,7 +90,6 @@ SoSendDataAbstractGenerator >> generatePolymorphic: methods [
 SoSendDataAbstractGenerator >> initialize [
 
 	super initialize.
-
 	branchInfo := #(30000 35535)
 ]
 

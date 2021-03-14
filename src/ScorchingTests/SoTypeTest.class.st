@@ -44,18 +44,18 @@ SoTypeTest >> testIsOnlyType [
 { #category : #tests }
 SoTypeTest >> testIsOnlyTypes [
 	self assert: (self trueType isOnlyTypes: {True}).
-	self assert: (self trueType isOnlyTypes: {True.False}).
-	self assert: (self smiType isOnlyTypes: {SmallInteger.Float}).
-	self assert: (self booleanType isOnlyTypes: {True.False}).
-	self assert: (self booleanType isOnlyTypes: {True.False.UndefinedObject}).
+	self assert: (self trueType isOnlyTypes: {True . False}).
+	self assert: (self smiType isOnlyTypes: {SmallInteger . Float}).
+	self assert: (self booleanType isOnlyTypes: {True . False}).
+	self assert: (self booleanType isOnlyTypes: {True . False . UndefinedObject}).
 	self deny: (self booleanType isOnlyTypes: {True}).
-	self deny: (self booleanType isOnlyTypes: {True.UndefinedObject}).
+	self deny: (self booleanType isOnlyTypes: {True . UndefinedObject}).
 	self deny: (self unknownType isOnlyTypes: {Boolean}).
 ]
 
 { #category : #tests }
 SoTypeTest >> testUnion [
-	self assert: ((self trueType union: self booleanType) isOnlyTypes: {True.False}).
+	self assert: ((self trueType union: self booleanType) isOnlyTypes: {True . False}).
 	self assert: ((self trueType union: self trueType) isOnlyType: True).
 	self deny: (self trueType union: self unknownType) isKnownType.
 	self deny: (self unknownType union: self trueType) isKnownType.

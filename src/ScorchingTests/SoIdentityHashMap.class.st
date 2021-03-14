@@ -1,14 +1,13 @@
 "
 I am a typical implementation of a HashMap. I should be used for caching. I am efficient and compact in memory.
-
 WARNING: nil is not a valid key.
 
-API:
-#cacheAt: key computedValue: aBlock 	
-#flushCache
+##API:
+- #cacheAt: key computedValue: aBlock 	
+- #flushCache
 
-Instance creation:
-#new: size accuracy: iteration
+## Instance creation:
+- #new: size accuracy: iteration
 
 Instance Variables
 	accuracy:		<Integer> number of times I will try to fetch the value for a given key before computing the value from the computedValueBlock

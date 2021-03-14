@@ -2040,7 +2040,6 @@ SoExamples >> getNastyCollection [
 SoExamples >> initialize [
 
 	super initialize.
-
 	dispatch := SoExamplesDispatch new.
 ]
 

@@ -4,7 +4,7 @@ Class {
 	#category : #'ScorchingDev-debug'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #printing }
 SoInliningLog >> basicPrintOn: stream [
 	stream << message
 ]

@@ -107,6 +107,7 @@ SoRangeTest >> rangeMinto0 [
 
 { #category : #'set up' }
 SoRangeTest >> setUp [
+	super setUp.
 	array := SoReceiver new
 				type: SoUnknownType default;
 				yourself.

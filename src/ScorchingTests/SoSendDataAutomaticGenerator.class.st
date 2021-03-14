@@ -40,6 +40,7 @@ Smalltalk globals allBehaviors do: [ :b |
 
 { #category : #instructions }
 SoSendDataAutomaticGenerator >> send: selector super: supered numArgs: numberArguments [
+
 	| methods |
 	(self arithmeticSelectors includes: selector) ifTrue: [ ^ self ].
 	self checkFirst.

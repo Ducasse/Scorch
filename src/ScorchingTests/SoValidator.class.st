@@ -241,6 +241,7 @@ SoValidator >> compareMethod: method with: anotherMethod args: args [
 
 { #category : #public }
 SoValidator >> debug: method passes: passes options: opts [
+
 	self options: (self materializeOptions: opts).
 	self timeoutProtectValidateMethod: method passes: passes.
 	^ self result
@@ -304,6 +305,7 @@ SoValidator >> exampleArgs: method [
 
 { #category : #initialization }
 SoValidator >> initialize [
+
 	super initialize.
 	jitComparison := false.
 	benchReport := OrderedCollection new.
