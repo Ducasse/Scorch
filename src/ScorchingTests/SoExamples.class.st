@@ -17,12 +17,13 @@ Class {
 	#category : #'ScorchingTests-Examples'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #configure }
 SoExamples class >> compiler [
 	| comp |
 	comp :=  super compiler.
-	comp compilationContext usesFullBlockClosure: true.
-	comp compilationContext encoderClass: OpalEncoderForSistaV1.
+	"comp compilationContext usesFullBlockClosure: true.
+	Since Pharo 90 fulBlock closures are used."
+	comp compilationContext encoderClass: EncoderForSistaV1.
 	^ comp
 ]
 

@@ -10,12 +10,12 @@ Class {
 	#category : #'ScorchingTests-Examples'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #configure }
 SoExamplesDispatch class >> compiler [
 	| comp |
 	comp :=  super compiler.
-	comp compilationContext usesFullBlockClosure: true.
-	comp compilationContext encoderClass: OpalEncoderForSistaV1.
+	"comp compilationContext usesFullBlockClosure: true. Since P9 we compiled in fullBlockClosures"
+	comp compilationContext encoderClass: EncoderForSistaV1.
 	^ comp
 ]
 

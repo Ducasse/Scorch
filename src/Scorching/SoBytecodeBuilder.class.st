@@ -164,7 +164,7 @@ SoBytecodeBuilder >> encoder: aValue [
 
 { #category : #initialization }
 SoBytecodeBuilder >> encoderClass [ 
-	^ OpalEncoderForSistaV1
+	^ EncoderForSistaV1
 ]
 
 { #category : #'bytecode generation' }
