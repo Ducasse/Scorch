@@ -1,5 +1,5 @@
 "
-I scan blocks to know if there is a NLR.
+I scan blocks to know if there is a NLR (non-local return). 
 
 hasNLR <Boolean>
 "
@@ -33,7 +33,6 @@ SoBlockNLRScanner >> hasNLR: aValue [
 SoBlockNLRScanner >> initialize [
 
 	super initialize.
-
 	hasNLR := false.
 ]
 
