@@ -48,16 +48,19 @@ SoSendDataAbstractGenerator >> generateMegamorphic: selector [
 
 { #category : #public }
 SoSendDataAbstractGenerator >> generateMock: method [
+
 	| scanner |
 	first := true.
 	stream := '' writeStream.
 	stream nextPut: ${.
 	scanner := InstructionStream on: method.
-	[scanner pc < method endPC] whileTrue:
-		[ currentPC := scanner pc.
-		scanner interpretNextInstructionFor: self].
+	[ scanner pc < method endPC ] whileTrue: [ 
+		currentPC := scanner pc.
+		scanner interpretNextInstructionFor: self ].
 	stream nextPut: $}.
-	^ self class compilerClass evaluate: stream contents
+	^ self class compilerClass new
+		  source: stream contents;
+		  evaluate
 ]
 
 { #category : #private }

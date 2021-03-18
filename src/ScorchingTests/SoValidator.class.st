@@ -59,7 +59,7 @@ SoValidator class >> allMethods [
 
 { #category : #accessing }
 SoValidator class >> exPass: x [
-	ExPass := x.
+	ExPass := x
 ]
 
 { #category : #accessing }

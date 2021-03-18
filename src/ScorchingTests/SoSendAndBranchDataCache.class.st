@@ -2,7 +2,7 @@
 I cache statically generated send and branch data to speed up tests.
 
 Instance Variables
-	examplesData:		<Ditionary> precomputed send and branch data for the ScExamples methods overused in tests
+	examplesData:		<Ditionary> precomputed send and branch data for the SoExamples methods heavily used in tests
 	genericData:		<ScBasicIdentityHashMap> cache for send and brach data of any method
 
 "
@@ -17,7 +17,15 @@ Class {
 }
 
 { #category : #private }
+SoSendAndBranchDataCache class >> exampleData [
+	<sampleInstance>
+	^ examplesData ifNil: [ self generateExamplesData ].
+
+]
+
+{ #category : #private }
 SoSendAndBranchDataCache class >> exampleData: method [
+
 	examplesData ifNil: [ self generateExamplesData ].
 	^ examplesData at: method ifAbsent: [ #() ]
 ]
@@ -32,7 +40,8 @@ SoSendAndBranchDataCache class >> flushCache [
 ]
 
 { #category : #private }
-SoSendAndBranchDataCache class >> generateCodeData: method [ 
+SoSendAndBranchDataCache class >> generateCodeData: method [
+
 	examplesData at: method put: (SoSendDataCustomGenerator new generateMock: method).
 	method literals allButLastDo: [ :each |
 		(each class == CompiledBlock) ifTrue: 
