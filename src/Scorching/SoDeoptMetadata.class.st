@@ -43,27 +43,26 @@ SoDeoptMetadata >> blockOutersAt: compiledBlock code: code [
 { #category : #accessing }
 SoDeoptMetadata >> debugFailingDeoptPoint: pc code: code [
 	| col |
-			FileStream stdout
-				<< 'Should deopt at 0-based pc: ' 
-				<< (self indexFromPC: pc code: code) printString 
-				<< '(was '
-				<< pc printString 
-				<< ') but have only deopt info for '.
-			col := OrderedCollection new.
-			deoptPoints array pairsDo: [:k : v |
-				col add: k].
-			col := col select: #notNil.
-			col sort.
-			col do: [ :c | FileStream stdout << c printString << ' ' ].
-			FileStream stdout cr.
-			(code at: code initialPC) = 217 
-				ifTrue: [ 
-					FileStream stdout 
+	Stdio stdout
+		<< 'Should deopt at 0-based pc: ' 
+		<< (self indexFromPC: pc code: code) printString 
+		<< '(was '
+		<< pc printString 
+		<< ') but have only deopt info for '.
+	col := OrderedCollection new.
+	deoptPoints array pairsDo: [ :k : v | col add: k ].
+	col := col select: [ :each | each notNil ].
+	col sort.
+	col do: [ :c | Stdio stdout << c printString << ' ' ].
+	Stdio stdout cr.
+	(code at: code initialPC) = 217 
+		ifTrue: [ 
+					Stdio stdout 
 						<< 'DISCARDED'
 						<< code metadata debugInfo ]
-				ifFalse: [
-					FileStream stdout << code symbolic printString].
-			self debugTermination
+		ifFalse: [
+					Stdio stdout << code symbolic printString ].
+	self debugTermination
 	
 ]
 

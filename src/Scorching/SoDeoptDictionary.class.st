@@ -30,6 +30,7 @@ SoDeoptDictionary >> array: aValue [
 
 { #category : #accessing }
 SoDeoptDictionary >> at: k [
+
 	array pairsDo: [ :key :value | key == k ifTrue: [ ^ value ] ].
 	self error: 'should not happen'
 ]
@@ -60,17 +61,18 @@ SoDeoptDictionary >> at: k put: val [
 SoDeoptDictionary >> initialize [
 
 	super initialize.
-
 	array := SoDeoptArray new: 10.
 ]
 
 { #category : #enumerating }
 SoDeoptDictionary >> keysAndValuesDo: aBlock [
+
 	array pairsDo: [ :key :value | aBlock value: key value: value ]
 ]
 
 { #category : #accessing }
 SoDeoptDictionary >> removeKey: k [
+
 	1 to: array size - 1 by: 2 do: [ :i | 
 		(array at: i) == k 
 			ifTrue: [ 

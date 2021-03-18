@@ -1,12 +1,20 @@
 "
-I am the facade to Scorch, a framework aiming to improve the virtual machine performance by speculatively optimizing frequently used code at runtime. 
+I am the facade to Scorch, a framework supporting speculative inlining. A key design aspect is that Scorch is based on bytecode optimisation.
+It is based on unsafe bytecodes as part of the Sista bytecode set.
 
-I have documented public APIs class-side that should be the *only* APIs used from the outside of this package. Any call on other APIs is not guaranteed to produce the same result in future release, and may be removed, renamed or altered.
+I documented public APIs class-side that should be the *only* APIs used from the outside of this package. Any call on other APIs is not guaranteed to produce the same result in future release, and may be removed, renamed or altered.
+
+## Elements
 
 The framework includes three main components:
 - The runtime optimizer: it speculates on types based on previous runs on the portion of code to optimise and generate an optimised version of the code annotated with deoptimisation meta-information. Through the facade's API, the optimizer is called on an execution stack: it analyses it to find the best code to optimise. The optimizer is the main and most complex component of the framework (most classes and methods belongs to this part).
-- The deoptimizer: it can recreate the non optimised stack from the context executing an optimised version of code, this is used for debugging and when a speculation made by the runtime optimiser happens to be incorrect.
+- The deoptimizer: it can recreate the non-optimised stack from the context executing an optimised version of code, this is used for debugging and when a speculation made by the runtime optimiser happens to be incorrect.
 - The dependency manager: it knows when a selector is installed what optimised code to discard to ensure the system remains correct, as if nothing was never optimised.
+
+## Attributions.
+
+Scorch has been developed by Clement Bera during his PhD at Inria in the RMOD team under the supervision of S. Ducasse and E. Miranda. The general design is explained 
+in https://hal.inria.fr/tel-01634137/ and https://www.slideshare.net/ClmentBra/phd-defense-clment-bra.
 "
 Class {
 	#name : #Scorch,
