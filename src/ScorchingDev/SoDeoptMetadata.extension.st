@@ -2,11 +2,13 @@ Extension { #name : #SoDeoptMetadata }
 
 { #category : #'*ScorchingDev' }
 SoDeoptMetadata >> printDebugInfo [
+
 	^ String streamContents: [ :s | self printDebugInfoOn: s ]
 ]
 
 { #category : #'*ScorchingDev' }
 SoDeoptMetadata >> printDebugInfoOn: stream [
+
 	debugInfo ifNil: [ ^ self ].
 	debugInfo ifEmpty: [ ^ stream << 'no opt logged' ].
 	"debugInfo is a collection of ScDebugInliningLog"
@@ -20,11 +22,13 @@ SoDeoptMetadata >> printDebugInfoOn: stream [
 
 { #category : #'*ScorchingDev' }
 SoDeoptMetadata >> printSDebugInfo [
+
 	^ String streamContents: [ :s | self printSDebugInfoOn: s ]
 ]
 
 { #category : #'*ScorchingDev' }
 SoDeoptMetadata >> printSDebugInfoOn: stream [
+
 	debugInfo ifNil: [ ^ self ].
 	debugInfo ifEmpty: [ ^ stream << 'no opt logged' ].
 	"debugInfo is a collection of ScDebugInliningLog"
@@ -36,5 +40,6 @@ SoDeoptMetadata >> printSDebugInfoOn: stream [
 
 { #category : #'*ScorchingDev' }
 SoDeoptMetadata >> storeOn: s [
+
 	s << '#DeoptMetadata'.
 ]

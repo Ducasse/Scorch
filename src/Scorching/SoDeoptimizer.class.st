@@ -1,5 +1,10 @@
 "
-I am able to deoptimize a stack of context. I recreate objects (in deoptObjects) and remap all the references. The blockClosure's outerContext relationship is however updated lazily, hence I also provide API to figure out the outerContext of a block depending on the BlockClosure's original outerContext status (deoptimized, optimised, normal)
+I am able to deoptimize a stack of context. I recreate objects (in deoptObjects) and remap all the references. 
+The blockClosure's outerContext relationship is however updated lazily, hence I also provide API to figure out the outerContext of 
+a block depending on the BlockClosure's original outerContext status (deoptimized, optimised, normal)
+
+I'm acting as a visitor over SoAbsDeoptNode.
+I use the SoDependencyMap (singleton) to manage dependencies.
 
 	deoptObjects <Dictionary <marker-> recoveredObject>>
 	optimizedContext <Context>
@@ -79,8 +84,9 @@ SoDeoptimizer >> deoptObjects: aValue [
 SoDeoptimizer >> deoptPointForContext: context [
 	| deopt isDiscarded |
 	"In discarded method, we are returning from a send and we need to step back by 1 bytecode (the immediate trap bytecode)"
+	
 	isDiscarded := self isDiscarded: context method.
-	isDiscarded ifTrue: [ FileStream stdout << 'Discarded deopt'. Transcript << 'Discarded deopt' ].
+	isDiscarded ifTrue: [ Stdio stdout << 'Discarded deopt'. Transcript << 'Discarded deopt' ].
 	deopt := context method metadata deoptPointAt: context pc - isDiscarded asBit code: context method.
 	deopt ifNotNil: [ ^ deopt ].
 	self error: 'no deopt point at current location.'
@@ -97,6 +103,7 @@ SoDeoptimizer >> deoptimizeContext: context [
 
 { #category : #discarding }
 SoDeoptimizer >> discardMethodIfNeeded: method [
+
 	method metadata increaseTrapTripped.
 	method metadata trapTripped >= MaxTrapTrips ifFalse: [ ^ self ].
 	SoDependencyMap default discardAndUninstallOptimizedCode: method.
@@ -120,7 +127,8 @@ SoDeoptimizer >> getPredecessorOf: ctxtToFind process: process [
 SoDeoptimizer >> initialDeopt: optContext [ 
 	"This happens when calling a discarded method, every bytecode is trap, and the first bytecode leads to deoptimization.
 	 We just need to change the context to use non optimized code."
-	FileStream stdout << ' INIT DEOPT '.
+	
+	Stdio stdout << ' INIT DEOPT '.
 	optContext privRefreshWith: optContext method metadata unoptimizedMethod.
 	^ optContext
 ]
@@ -129,7 +137,6 @@ SoDeoptimizer >> initialDeopt: optContext [
 SoDeoptimizer >> initialize [
 
 	super initialize.
-
 	deoptObjects := SoDeoptDictionary new.
 ]
 
@@ -141,11 +148,13 @@ SoDeoptimizer >> isDeoptimizedContext: ctxt [
 { #category : #metadata }
 SoDeoptimizer >> isDiscarded: method [
 	"Check for trap bytecode at first pc"
+	
 	^ (method at: method initialPC) = 217
 ]
 
 { #category : #materialization }
 SoDeoptimizer >> materializeObjects: listOfObjects [
+
 	listOfObjects do: [ :each | deoptObjects at: each marker put: each asObjectTemplate ].
 	listOfObjects do: [ :each | each accept: self ].
 ]
@@ -179,6 +188,8 @@ SoDeoptimizer >> patchSender: baseContext [
 
 { #category : #'outer context' }
 SoDeoptimizer >> recoverDeadOuterContext: closure [
+
+	self flag: #todo. "SD: looks like it would be better to use ContextClass sharedpools. Else what is the point to define it."
 	closure outerContext: ((Context newForMethod: closure compiledBlock outerCode)
 		method: closure compiledBlock outerCode;
 		receiver: closure receiver;

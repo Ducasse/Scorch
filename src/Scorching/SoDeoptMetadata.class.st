@@ -91,15 +91,16 @@ SoDeoptMetadata >> debugTermination [
 	<< thisContext home sender method selector
 	<<  (thisContext home sender at: 1) printString
 	<< ' terminating process.'."
-	FileStream stdout << 'HARD TERMINATION'.
-	'HARD TERMINATION' logCr.
+	Stdio stdout << 'HARD TERMINATION'.
+	'HARD TERMINATION' traceCr.
 	proc := Processor activeProcess.
 	[proc terminate] forkAt: proc priority + 1
 ]
 
 { #category : #accessing }
 SoDeoptMetadata >> deoptPointAt: pc code: code [
-	^ deoptPoints 
+
+	^ deoptPoints    
 		at: (self indexFromPC: pc code: code) 
 		ifAbsent: [ nil "self debugFailingDeoptPoint: pc code: code" ].
 	
@@ -119,6 +120,7 @@ SoDeoptMetadata >> deoptPoints: aValue [
 
 { #category : #accessing }
 SoDeoptMetadata >> increaseTrapTripped [
+
 	trapTripped := trapTripped + 1
 ]
 
@@ -131,7 +133,6 @@ SoDeoptMetadata >> indexFromPC: pc code: code [
 SoDeoptMetadata >> initialize [
 
 	super initialize.
-
 	blockOuters := SoDeoptDictionary new.
 	deoptPoints := SoDeoptDictionary new.
 	trapTripped := 0.

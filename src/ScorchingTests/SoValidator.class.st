@@ -44,6 +44,7 @@ Class {
 
 { #category : #accessing }
 SoValidator class >> allExamples [
+
 	^ self exampleClass methodDict values select: [ :m | m selector beginsWith: 'ex' ]
 ]
 
@@ -63,18 +64,21 @@ SoValidator class >> exPass: x [
 
 { #category : #accessing }
 SoValidator class >> exampleClass [
+
 	^ SoExamples
 ]
 
 { #category : #initialization }
 SoValidator class >> initialize [
+
 	Timeout := 2.
 	ExPass := false.
 ]
 
 { #category : #accessing }
 SoValidator class >> timeout: x [
-	Timeout := x.
+
+	Timeout := x
 ]
 
 { #category : #asserting }
@@ -85,7 +89,8 @@ SoValidator >> assert: boolean [
 ]
 
 { #category : #asserting }
-SoValidator >> assert: boolean description: stringOrBlock [ 
+SoValidator >> assert: boolean description: stringOrBlock [
+
 	boolean ifTrue: [ ^ self ].
 	validationFailureClass new
 		messageText: stringOrBlock value;
@@ -94,6 +99,7 @@ SoValidator >> assert: boolean description: stringOrBlock [
 
 { #category : #asserting }
 SoValidator >> assert: val1 equals: val2 [
+
 	self 
 		assert: val1 = val2
 		description: [ 'Got ' , val1 printString , ' instead of ' , val2 printString ]
@@ -101,6 +107,7 @@ SoValidator >> assert: val1 equals: val2 [
 
 { #category : #private }
 SoValidator >> basicValidateMethod: method passes: o [
+
 	| optimizedCode |
 	passSymbol := o.
 	currentPass := SoMethodDecompiler.
@@ -112,7 +119,6 @@ SoValidator >> basicValidateMethod: method passes: o [
 		"pass = SoDeadFlowElimination ifTrue: [ 1halt ]."
 		pass new runOn: codeNode.
 		self validateGraphSanity ]. 
-	"FileStream stdout << codeNode printString."
 	optimizedCode := codeNode generateBytecodes. 
 	(options includes: #halt) ifTrue: [ 1halt ].
 	self postGenerationValidation: method with: optimizedCode.
@@ -121,6 +127,7 @@ SoValidator >> basicValidateMethod: method passes: o [
 
 { #category : #bench }
 SoValidator >> bench: method against: optimizedMethod [
+
 	self ensureMethodIsExample: method.
 	[ self bench: method with: optimizedMethod args: (self exampleArgs: method) ]
 		on: Error
@@ -129,6 +136,7 @@ SoValidator >> bench: method against: optimizedMethod [
 
 { #category : #bench }
 SoValidator >> bench: method with: anotherMethod args: args [
+
 	benchReport add: {
 		method selector , ' ' , (passSymbol printStringLimitedTo: 20) .
 		[ self newGuineaPig withArgs: args executeMethod: method ] benchFor: 1 seconds .
@@ -138,6 +146,7 @@ SoValidator >> bench: method with: anotherMethod args: args [
 
 { #category : #reporting }
 SoValidator >> benchReport: s [
+
 	benchReport ifNil: [ ^ self ].
 	benchReport do: [ :tuple |
 		s << tuple first.
@@ -357,6 +366,7 @@ SoValidator >> jitCode: optimizedMethod [
 
 { #category : #comparing }
 SoValidator >> jitCompare: method with: optimizedMethod [
+
 	jitComparison := true.
 	self compare: method with: optimizedMethod.
 	jitComparison := false.
@@ -364,6 +374,7 @@ SoValidator >> jitCompare: method with: optimizedMethod [
 
 { #category : #options }
 SoValidator >> materializeOptions: id [
+
 	options := OrderedCollection new.
 	self possibleOptions withIndexDo: [ :sym :index |
 		(id bitAnd: (1 << index)) = id ifTrue: [options add: sym ] ].
@@ -372,16 +383,19 @@ SoValidator >> materializeOptions: id [
 
 { #category : #comparing }
 SoValidator >> newGuineaPig [
+
 	^ self class exampleClass new
 ]
 
 { #category : #options }
 SoValidator >> options: validationOptions [
+
 	options := validationOptions
 ]
 
 { #category : #options }
 SoValidator >> possibleOptions [
+
 	^ #(
 		graphSanity "Ensure the graph is sane between each pass on the CFG"
 		comparison "Run the optimized code against the non-optimized and check the results are correct"
@@ -414,6 +428,7 @@ SoValidator >> prepareCodePasses [
 
 { #category : #reporting }
 SoValidator >> printChecks: s [
+
 	| failures |
 	failures := report values ifEmpty: [ 0 ] ifNotEmpty: [ :x | x sum: [ :e | e size ] ].
 	(checks + failures) printOn: s.
@@ -428,7 +443,8 @@ SoValidator >> printChecks: s [
 ]
 
 { #category : #reporting }
-SoValidator >> printFail: fail on: s [ 
+SoValidator >> printFail: fail on: s [
+
 	s 	<< '>>> Failure: '.
 	self printMethod: fail method on: s.
 	s
@@ -453,6 +469,7 @@ SoValidator >> printFail: fail on: s [
 
 { #category : #reporting }
 SoValidator >> printMethod: method on: s [
+
 	s 	
 		<< method methodClass name
 		<< '>>#'
@@ -461,6 +478,7 @@ SoValidator >> printMethod: method on: s [
 
 { #category : #reporting }
 SoValidator >> report [ 
+
 	| s |
 	s := '' writeStream.
 	150 timesRepeat: [ s nextPut: $| ].
@@ -678,6 +696,7 @@ SoValidator >> validatePhi: phi predecessors: preds [
 
 { #category : #reporting }
 SoValidator >> validationReport: s [
+
 	s << 'Validation report: '.
 	s cr.
 	self printChecks: s.
