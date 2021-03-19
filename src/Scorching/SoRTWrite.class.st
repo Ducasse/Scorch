@@ -42,12 +42,12 @@ SoRTWrite >> ignoreStoreCheck: aValue [
 SoRTWrite >> initialize [
 
 	super initialize.
-
 	ignoreStoreCheck := false.
 ]
 
 { #category : #testing }
 SoRTWrite >> isDefaultStore [
+
 	^ ignoreStoreCheck not
 ]
 

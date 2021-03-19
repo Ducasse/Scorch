@@ -64,8 +64,8 @@ SoOptimizer >> getFirstCodeNode: ctxtTripping [
 
 { #category : #public }
 SoOptimizer >> optimizeContext: context [ 
-	"FileStream stdout cr.
-	FileStream stdout << context method printString << ' tripping '."
+	"Stdio stdout cr.
+	Stdio stdout << context method printString << ' tripping '."
 	context method isGloballyOptimized ifTrue: [ ^ self ].
 	context method hasNoCounterBit ifTrue: [ ^ self ]. 
 	Transcript show: 'Counter tripped in ' , context method printString; cr.

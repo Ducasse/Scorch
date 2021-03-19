@@ -52,8 +52,8 @@ SoMethod >> logInstall: code [
 	Transcript << 'Installed ' << code printString << ' in ' << self classToInstall name.
 	Transcript cr.
 	
-	FileStream stdout << 'Installed ' << code printString << ' in ' << self classToInstall name.
-	FileStream stdout cr.
+	Stdio stdout << 'Installed ' << code printString << ' in ' << self classToInstall name.
+	Stdio stdout cr.
 ]
 
 { #category : #backend }
@@ -62,8 +62,8 @@ SoMethod >> logInstallFailure: code msg: msg [
 	Transcript << 'Ignored install of ' << code printString << ' in ' << self classToInstall name << ' because ' << msg.
 	Transcript cr.
 	
-	FileStream stdout << 'Ignored install of ' << code printString << ' in ' << self classToInstall name << ' because ' << msg.
-	FileStream stdout cr.
+	Stdio stdout << 'Ignored install of ' << code printString << ' in ' << self classToInstall name << ' because ' << msg.
+	Stdio stdout cr.
 ]
 
 { #category : #accessing }
