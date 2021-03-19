@@ -5,7 +5,16 @@ SoAbsImmediate >> gtInspectorInstructionsIn: composite [
 	<gtInspectorPresentationOrder: 6> 
 	composite table 
 		title: 'Instr'; "Instructions"
-		display: (self printString)
+		display: self printString
+]
+
+{ #category : #'*ScorchingDev' }
+SoAbsImmediate >> inspectionInstructions [
+	<inspectorPresentationOrder: 6 title: 'Instr'> 
+		
+	^ SpTextPresenter new 
+		text: self printString;
+		yourself
 ]
 
 { #category : #'*ScorchingDev' }

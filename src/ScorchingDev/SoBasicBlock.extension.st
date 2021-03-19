@@ -27,6 +27,18 @@ SoBasicBlock class >> ignoreAccessorNames [
 ]
 
 { #category : #'*ScorchingDev' }
+SoBasicBlock >> inspectionScheduling [
+	<inspectorPresentationOrder: 9 title: 'Scheduling'> 
+	
+	^ SpTreePresenter new 
+			roots: { self };
+			expandAll;
+			children: [ :each | each debugSchedulingChildren] ;
+			yourself
+	
+]
+
+{ #category : #'*ScorchingDev' }
 SoBasicBlock >> instructions [
 	| instrs |
 	instrs := OrderedCollection new.

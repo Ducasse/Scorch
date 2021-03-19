@@ -43,6 +43,29 @@ SoAbsBodyInstruction class >> ignoreAccessorNames [
 ]
 
 { #category : #'*ScorchingDev' }
+SoAbsBodyInstruction >> inspectionScheduling [
+	<inspectorPresentationOrder: 11 title: 'Sub'> 
+	
+	^ SpTreePresenter new 
+			roots: { self };
+			expandAll;
+			children: [ :each | each debugSchedulingChildren] ;
+			yourself
+]
+
+{ #category : #'*ScorchingDev' }
+SoAbsBodyInstruction >> inspectionUses [
+	<inspectorPresentationOrder: 12 title: 'UsesND'> 
+	
+	^ SpTreePresenter new 
+			roots: { self };
+			expandAll;
+			children: [ :each | each debugUsesNoDeopt] ;
+			yourself
+	
+]
+
+{ #category : #'*ScorchingDev' }
 SoAbsBodyInstruction >> longPrintOn: s [
 	SoPrettyPrinter new printDefUse: self on: s
 ]
