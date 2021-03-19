@@ -15,6 +15,17 @@ SoAbsCode >> gtInspectorSchedulingIn: composite [
 ]
 
 { #category : #'*ScorchingDev' }
+SoAbsCode >> inspectionScheduling [
+	<inspectorPresentationOrder: 11 title: 'Scheduling'> 
+	
+	^ SpTreePresenter new 
+			roots: { self };
+			expandAll;
+			children: [ :each | each debugSchedulingChildren] ;
+			yourself
+]
+
+{ #category : #'*ScorchingDev' }
 SoAbsCode >> printOn: s [
 	s 
 		<< self class name
