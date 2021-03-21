@@ -1,11 +1,14 @@
 "
-I set correctly the dominators to the basicBlocks. This algorithm was ported from a C implementation. This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm. However, as the size of the CFG is usually limited, it's usually good enough.
+I set correctly the dominators to the basicBlocks. This algorithm was ported from a C implementation. 
+This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm. 
+However, as the size of the CFG is usually limited, it's usually good enough.
 
-This is on purpose rewriting using optimized constructs (to:do:) instead of do:, because 20% of the time (of the whole optimizer) was spent in SequencableCollection>>#do: and this algo is performance critical. The variables are declared outside of loops because it avoids the push nil at each iteration.
+This is on purpose rewriting using optimized constructs (to:do:) instead of do:, because 20% of the time (of the whole optimizer) was spent in SequencableCollection>>#do: and this algorithm is performance critical. 
+The variables are declared outside of loops because it avoids the push nil at each iteration.
 
 2 passes:
- - pass 1 (computeDominators): calculs all the dominators of each basicblock
- - pass 2 (computeImmediateDominators): calculs the immediate dominator out of the dominators found n pass 1
+ - pass 1 (computeDominators): computes all the dominators of each basicblock.
+ - pass 2 (computeImmediateDominators): computes the immediate dominator out of the dominators found n pass 1.
 
 Assumes that the given basic blocks are in pre order traversal for efficiency, though it works in any case.
 

@@ -50,7 +50,6 @@ SoReorderBasicBlocks >> computeNextBlockToVisit: aNode [
 SoReorderBasicBlocks >> initialize [
 
 	super initialize.
-
 	basicBlocksOrdered := OrderedCollection new.
 	workList := OrderedCollection new.
 	loops := OrderedCollection new.

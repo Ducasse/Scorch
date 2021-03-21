@@ -1,5 +1,5 @@
 "
-I try to inline a message based on its runtime information and type information inferred. IFails if not enough type information.
+I try to inline a message based on its runtime information and type information inferred. Fails if not enough type information.
 
 I answer the list of sends in the code inlined or an empty list.
 
@@ -59,6 +59,7 @@ SoAbsMessageInliner >> copiedValues [
 
 { #category : #private }
 SoAbsMessageInliner >> createAndSetBasicBlocks [
+
 	nextBasicBlock := send basicBlock.
 	prevBasicBlock := send codeNode addBasicBlock: SoBasicBlock new before: nextBasicBlock.
 	prevBasicBlock firstInstr: (SoJumpAhead from: nextBasicBlock to: inlinedCodeNode entry).
@@ -77,6 +78,7 @@ SoAbsMessageInliner >> extractSendsFrom: codeNode [
 
 { #category : #private }
 SoAbsMessageInliner >> finishInlining [
+
 	self addBasicBlocks.
 	self fixEntryExitsDominatorTree.
 	self mergeFlow.

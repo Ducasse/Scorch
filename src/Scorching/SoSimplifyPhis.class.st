@@ -1,7 +1,7 @@
 "
 I analyse phis and remove them if they don't make sense.
 
-I can be use over a codeNode (slower, collect the phis and process them) or directly to a list of phis.
+I can be used over a codeNode (slower, collect the phis and process them) or directly to a list of phis.
 
 3 main cases lead to phi simplification:
 - phi result is unused 
@@ -29,6 +29,7 @@ SoSimplifyPhis >> addToWorkList: collection ifNotPhi: phi [
 
 { #category : #private }
 SoSimplifyPhis >> check1InputPhi: phi [
+
 	self addToWorkList: phi uses ifNotPhi: phi.
 	phi removeAndReplaceUsesBy: phi inputs anyOne
 ]
@@ -46,6 +47,7 @@ SoSimplifyPhis >> checkPhiFunction: phi [
 { #category : #private }
 SoSimplifyPhis >> checkRedondantInput: phi [
 	"Redondant phi in loops, the input is incoming from before the loop and the other input is itself."
+	
 	(phi inputs anySatisfy: [ :input | input == phi ]) ifFalse: [ ^ self ].
 	self addToWorkList: phi uses ifNotPhi: phi.
 	phi inputs
@@ -65,12 +67,12 @@ SoSimplifyPhis >> checkUnused: phi [
 SoSimplifyPhis >> initialize [
 
 	super initialize.
-
 	workList := OrderedCollection new.
 ]
 
 { #category : #public }
 SoSimplifyPhis >> runOn: codeNode [
+
 	codeNode basicBlocks do: [ :basicBlock |
 		basicBlock phisDo: [ :phi | workList add: phi ] ].
 	self simplifyPhis.
@@ -86,6 +88,7 @@ SoSimplifyPhis >> simplifyPhis [
 
 { #category : #public }
 SoSimplifyPhis >> simplifyPhis: phis [
+
 	workList := phis.
 	self simplifyPhis
 ]

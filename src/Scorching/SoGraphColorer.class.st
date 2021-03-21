@@ -37,7 +37,7 @@ SoGraphColorer class >> analyse [
 	record := OrderedCollection new.
 	1 to: 50 do: [ :numberOfNodes |
 		1 to: numberOfNodes do: [ :numberOfConstraints |
-			nodes := SoGraphColorer exampleNodes: numberOfNodes relations: numberOfConstraints.
+			nodes := self exampleNodes: numberOfNodes relations: numberOfConstraints.
 			record add: { numberOfNodes . numberOfConstraints . nodes max: [ :node | node color ] } ] ].
 	^ record
 ]
@@ -61,6 +61,7 @@ SoGraphColorer >> color: nodeCollection minColor: min maxColor: max [
 	"Attempt to color with the minimum number of color (min). 
 	  On failure, attempt to color with 1 more color, again and 
 	  again, until it reaches the max number of colors (max)."
+	
 	success := false.
 	self saveRelations: nodeCollection.
 	min to: max do: [ :numColor |
@@ -74,6 +75,7 @@ SoGraphColorer >> color: nodeCollection minColor: min maxColor: max [
 
 { #category : #private }
 SoGraphColorer >> color: nodeCollection with: numColor [
+
 	| stack change |
 	stack := OrderedCollection new.
 	change := true.
@@ -93,11 +95,12 @@ SoGraphColorer >> color: nodeCollection with: numColor [
 
 { #category : #private }
 SoGraphColorer >> colorize: stack with: numColors [
+
 	| coloris |
 	success := true.
 	coloris := 1 to: numColors.
 	self restoreRelations: stack.
-	[stack isEmpty] whileFalse: [ 
+	[ stack isEmpty ] whileFalse: [ 
 		| elem forbiddenColors |
 		elem := stack removeLast.
 		forbiddenColors := (elem relations collect: [ :rel | rel color ]) asSet.
@@ -109,12 +112,14 @@ SoGraphColorer >> colorize: stack with: numColors [
 
 { #category : #private }
 SoGraphColorer >> restoreRelations: nodeCollection [
+
 	nodeCollection do: [ :e |
 		e restoreRelations ]
 ]
 
 { #category : #private }
 SoGraphColorer >> saveRelations: nodeCollection [
+
 	nodeCollection do: [ :e | 
 		e saveRelations ]
 ]

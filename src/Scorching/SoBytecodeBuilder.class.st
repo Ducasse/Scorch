@@ -1,7 +1,7 @@
 "
 I am used in a 2-step process to generate compiledMethod/CompiledBlock out of the Method/Block.
 
-1. I am called to generate the bytecodes of each basicblock based on the current instructions they hold. I use the the encoder to do so, and I store each basic block bytecodes in their tempData field.
+1. I am called to generate the bytecodes of each basicblock based on the current instructions they hold. I use the encoder to do so, and I store each basic block bytecodes in their tempData field.
 
 2. I then generate the jumps iteratively with the correct size, the compiled method header and generate the method by merging the basicblock bytecodes.
 
@@ -766,6 +766,7 @@ SoBytecodeBuilder >> traverseReturn: ret [
 
 { #category : #results }
 SoBytecodeBuilder >> writeLiteralsToMethod: cm originalMethod: method [
+
 	literals withIndexDo: [ :lit :i | cm literalAt: i put: lit ].
 	cm selector: method selector.
 	cm methodClass: method methodClass.

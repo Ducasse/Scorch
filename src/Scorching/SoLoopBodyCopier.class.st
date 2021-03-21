@@ -123,7 +123,6 @@ SoLoopBodyCopier >> initPhiMapping [
 SoLoopBodyCopier >> initialize [
 
 	super initialize.
-
 	mapping := Dictionary new.
 	tempCriticalEdges := OrderedCollection new.
 	instrsUsedAfterLoop := OrderedCollection new.
