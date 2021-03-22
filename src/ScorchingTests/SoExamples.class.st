@@ -27,7 +27,7 @@ SoExamples class >> compiler [
 	^ comp
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #equality }
 SoExamples >> = anotherObject [
 	anotherObject class == self class ifFalse: [ ^ false ].
 	1 to: self class instSize do: [ :i |
@@ -94,7 +94,7 @@ SoExamples >> arithmeticData [
 	
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> bar [
 	| t |
 	t := 1.
@@ -104,7 +104,7 @@ SoExamples >> bar [
 	^ #bar
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> bar: a foo: b baz: c [
 	iv2 := 'r'.
 	[ :val |
@@ -112,34 +112,34 @@ SoExamples >> bar: a foo: b baz: c [
 	^ $c
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> baz [ 
 	^ self
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> blockCannotReturn [
 	^ [  ^ 1 ]
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> blockWithDeadOuter [
 	^ [ 1 + 2. self ]
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> blockWithNLR [
 	11 + 12.
 	[ ^ 1 ] value.
 	22 + 23.
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> blockWithNLR2 [
 	self evalFar: [ ^ 10 ]
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> bool: a [
 	iv1 := a.
 	iv2 := [ :b | | t |
@@ -148,12 +148,12 @@ SoExamples >> bool: a [
 	^ true
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - context' }
 SoExamples >> callContext [
 	^ thisContext
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - context' }
 SoExamples >> contextCancel [
 	#(true false) atRandom ifTrue: [ ^ self ].
 	^ thisContext receiver
@@ -169,17 +169,17 @@ SoExamples >> dispatch: anObject [
 	dispatch := anObject
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> eval: aBlock [
 	^ aBlock value
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> evalFar: aBlock [
 	^ self eval: aBlock
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> evalMulti: aBlock [
 	iv1 := aBlock value.
 	iv2 := aBlock value printString.
@@ -1985,7 +1985,7 @@ SoExamples >> exampleWhileTrue5 [
 	^ 5
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> foo [
 	| t p |
 	p := 0.
@@ -1998,7 +1998,7 @@ SoExamples >> foo [
 	
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> foo: a bar: a2 [
 	| temp |
 	temp := $z.
@@ -2007,7 +2007,7 @@ SoExamples >> foo: a bar: a2 [
 	^ $d
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - collection' }
 SoExamples >> getArray [
 	^ #(1 2 3 4 5)
 ]
@@ -2017,12 +2017,12 @@ SoExamples >> getIndex [
 	^ (iv1 ifNil: [ iv1 := Array braceWith: 0 with: 0 with: 0 with: 0 ]) at: ClassVar1
 ]
 
-{ #category : #accessing }
+{ #category : #'example - collection' }
 SoExamples >> getMaybeEmptyCollection [
 	^ Array new: (3 atRandom - 1)
 ]
 
-{ #category : #accessing }
+{ #category : #'example - collection' }
 SoExamples >> getNastyCollection [
 	| col |
 	col := OrderedCollection new.
@@ -2043,22 +2043,22 @@ SoExamples >> initialize [
 	dispatch := SoExamplesDispatch new.
 ]
 
-{ #category : #accessing }
+{ #category : #'example - state' }
 SoExamples >> iv1: anObject [
 	^ iv1 := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #'example - state' }
 SoExamples >> iv2 [
 	^ iv2
 ]
 
-{ #category : #accessing }
+{ #category : #'example - state' }
 SoExamples >> iv2: anObject [
 	^ iv2 := anObject
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> kick: i [
 	| t1 t2 |
 	t1 := 7.
@@ -2070,31 +2070,31 @@ SoExamples >> kick: i [
 	^ i yourself
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - non local return' }
 SoExamples >> nlr1 [
 	iv1 := true.
 	self eval: [ iv1 ifTrue: [ ^ nil ] ].
 	
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - non local return' }
 SoExamples >> nlr2 [
 	iv1 := true.
 	self nonInlinedEval: [ iv1 ifTrue: [ ^ nil ] ].
 	
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #examples }
 SoExamples >> nonInlinedBool [
 	^ false
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> nonInlinedEval: aBlock [
 	^ aBlock value
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'examples - blocks' }
 SoExamples >> runAndReturnBlock: aBlock [
 	aBlock value.
 	^ [ 1 + 2 ]
@@ -2129,12 +2129,12 @@ SoExamples >> specialData [
 
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - string' }
 SoExamples >> string [
 	^ 'string'
 ]
 
-{ #category : #'tests running facilities' }
+{ #category : #'example - string' }
 SoExamples >> string2 [
 	^ 'string'
 ]
