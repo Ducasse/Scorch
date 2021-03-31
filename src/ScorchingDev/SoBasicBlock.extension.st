@@ -13,6 +13,14 @@ SoBasicBlock >> debugSchedulingChildren [
 ]
 
 { #category : #'*ScorchingDev' }
+SoBasicBlock >> displayStringOn: s [
+	s << 'BB ' << self printingNumber.
+	[
+		s << ' == '.
+		self instructionsDo: [ :instr | instr printOn: s ] ] on: Error do: [  ]
+]
+
+{ #category : #'*ScorchingDev' }
 SoBasicBlock >> gtInspectorSchedulingIn: composite [
 	<gtInspectorPresentationOrder: 9>  
 	^ composite tree
@@ -24,6 +32,16 @@ SoBasicBlock >> gtInspectorSchedulingIn: composite [
 { #category : #'*ScorchingDev' }
 SoBasicBlock class >> ignoreAccessorNames [
 	^ #(firstInstr)
+]
+
+{ #category : #'*ScorchingDev' }
+SoBasicBlock >> inspectionInstructions [
+	<inspectorPresentationOrder: 4 title: 'Instructions'> 
+
+	^ SpTablePresenter new
+		items: self instructions;	
+		yourself
+		
 ]
 
 { #category : #'*ScorchingDev' }

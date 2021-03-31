@@ -27,10 +27,11 @@ SoAbsNode >> doesNotUnderstand: aMessage [
 
 { #category : #'*ScorchingDev' }
 SoAbsNode >> inspectionInstructions [
-	<inspectorPresentationOrder: 6 title: 'Instructions'> 
-	
+	"<inspectorPresentationOrder: 6 title: 'Instructions'> 
+	self halt.
+	too high"
 	^ SpTablePresenter new
-		items: (self codeNode basicBlocks flatCollect: [:bb | bb instructions , ' ']);	
+		items: (self codeNode basicBlocks "collect: [:bb | bb instructions ]");	
 		yourself
 		
 
