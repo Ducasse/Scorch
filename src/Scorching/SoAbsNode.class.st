@@ -17,6 +17,12 @@ SoAbsNode >> canLocallySpecifyType [
 	^ false
 ]
 
+{ #category : #accessing }
+SoAbsNode >> codeNode [
+
+	^ self subclassResponsibility 
+]
+
 { #category : #testing }
 SoAbsNode >> deoptInfo [
 	^ nil

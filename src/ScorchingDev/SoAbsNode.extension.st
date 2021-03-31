@@ -26,34 +26,13 @@ SoAbsNode >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'*ScorchingDev' }
-SoAbsNode >> gtInspectorInstructionsIn: composite [
-	<gtInspectorPresentationOrder: 6> 
-	self flag: #todo. 
-	"We should fix the codeNode"
-	
-	composite table 
-		title: 'Instr'; "Instructions"
-		display: (self codeNode basicBlocks flatCollect: [:bb | bb instructions , ' '])
-]
-
-{ #category : #'*ScorchingDev' }
-SoAbsNode >> gtInspectorSymbolicrIn: composite [
-	<gtInspectorPresentationOrder: 7> 
-	self flag: #todo. 
-	"We should fix the codeNode"
-	composite text 
-		title: 'Sym'; "Symbolic"
-		format: [String streamContents: [:s | SoPrettyPrinter new printCodeNode: self codeNode on: s]]
-]
-
-{ #category : #'*ScorchingDev' }
-SoAbsNode >> inpectionInstructions [
+SoAbsNode >> inspectionInstructions [
 	<inspectorPresentationOrder: 6 title: 'Instructions'> 
-	self flag: #todo. 
-	"We should fix the codeNode"
-	^ SpTextPresenter new 
-		text: (self codeNode basicBlocks flatCollect: [:bb | bb instructions , ' ']);
+	
+	^ SpTablePresenter new
+		items: (self codeNode basicBlocks flatCollect: [:bb | bb instructions , ' ']);	
 		yourself
+		
 
 
 ]
@@ -61,8 +40,7 @@ SoAbsNode >> inpectionInstructions [
 { #category : #'*ScorchingDev' }
 SoAbsNode >> inspectionSymbolic [
 	<inspectorPresentationOrder: 6 title: 'Symb'> 
-	self flag: #todo. 
-	"We should fix the codeNode"
+
 	^ SpTextPresenter new 
 		text: (String streamContents: [:s | SoPrettyPrinter new printCodeNode: self codeNode on: s]);
 		yourself
