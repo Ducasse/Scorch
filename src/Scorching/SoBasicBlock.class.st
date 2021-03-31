@@ -49,7 +49,7 @@ SoBasicBlock >> addPredecessor: pred [
 
 { #category : #accessing }
 SoBasicBlock >> backwardPredecessor [
-	"Answers my previours basic block that is related to me through backjump relationship.
+	"Answers my previous basic block that is related to me through backjump relationship.
 	 There is at most one due to loop canonicalization."
 
 	^ self predecessors detect: [ :each | each lastInstr isBackjump ]

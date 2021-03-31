@@ -2,17 +2,21 @@
 Validates the graph for a given method and a set of passes. What to validate is specified as options.
 
 Example:
+```
 SoValidator new
 	validateMethods: {SoExamples >> #exampleAdd}
 	passes: #(O0 ""O1 #O1b O2"")
-	options: #( reportToTranscript ) .
-Then in the Transcript you can select specific lines matching a validation failure and run then as a DoIt.
-In this case, we validated all the example methods, with 4 different set of passes defined by the compiler and we validated that the generated method could be correctly generated to machine code. The result is reported to Transcript,
+	options: #( reportToTranscript )
+```
 
-The list of optimizations pass to perform is either one of the default compiler optimization level passed as a symbol (#O1, #O2, etc) or a list of ScAbstractIterator.
+Then in the Transcript you can select specific lines matching a validation failure and run then as a DoIt.
+In this case, we validated all the example methods, with 4 different set of passes defined by the compiler and we validated that the generated method could be correctly generated to machine code. 
+The result is reported to Transcript.
+
+The list of optimizations pass to perform is either one of the default compiler optimization level passed as a symbol (#O1, #O2, etc) or a list of SoAbstractIterator.
 
 For possible options, evaluate: 
-ScValidator new possibleOptions.
+`SoValidator new possibleOptions`.
 
 
 
