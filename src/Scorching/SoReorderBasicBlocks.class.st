@@ -1,8 +1,10 @@
 "
-I reorder the basicblocks for data optimizations and  bytecode generation (This is a postOrderTraversal, but in addition, loop bodies are kept contiguous).
+I reorder the basicblocks for data optimizations and bytecode generation: This is a postOrderTraversal, but in addition, loop bodies are kept contiguous.
 
-basicBlocksOrdered <Collection of BasicBlocks> the basicBlocks of the codeNode in the right order that will be set to the codeNode once the pass has been run.
-workList <Collection of BasicBlock> BasicBlocks that needs to be processed by the algorithm (the graph is traversed in control flow order)
+## Implementation
+
+- `basicBlocksOrdered` <Collection of BasicBlock> the basicBlocks of the codeNode in the right order that will be set to the codeNode once the pass has been run.
+- `workList` <Collection of BasicBlock> the basicBlocks that need to be processed by the algorithm (the graph is traversed in control flow order).
 "
 Class {
 	#name : #SoReorderBasicBlocks,

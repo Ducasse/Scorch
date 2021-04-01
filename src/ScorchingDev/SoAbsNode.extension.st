@@ -26,19 +26,6 @@ SoAbsNode >> doesNotUnderstand: aMessage [
 ]
 
 { #category : #'*ScorchingDev' }
-SoAbsNode >> inspectionInstructions [
-	"<inspectorPresentationOrder: 6 title: 'Instructions'> 
-	self halt.
-	too high"
-	^ SpTablePresenter new
-		items: (self codeNode basicBlocks "collect: [:bb | bb instructions ]");	
-		yourself
-		
-
-
-]
-
-{ #category : #'*ScorchingDev' }
 SoAbsNode >> inspectionSymbolic [
 	<inspectorPresentationOrder: 6 title: 'Symb'> 
 

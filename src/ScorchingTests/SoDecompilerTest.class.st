@@ -4,7 +4,7 @@ Class {
 	#category : #'ScorchingTests-NewUnit'
 }
 
-{ #category : #tests }
+{ #category : #'tests - basic blocks' }
 SoDecompilerTest >> testDecompileInstanceVariableReturn [
 	| soMethod |
 	soMethod := SoMethodDecompiler decompile: (SoExamples >> #iv2).
@@ -14,14 +14,29 @@ SoDecompilerTest >> testDecompileInstanceVariableReturn [
 	self assert: soMethod basicBlocks first instructions second class equals: SoReturn.
 ]
 
-{ #category : #tests }
+{ #category : #'tests - decompilerr' }
 SoDecompilerTest >> testDecompileReturnsASoMethod [ 
 	| soMethod |
 	soMethod := SoMethodDecompiler decompile: (Integer >> #slowFactorial).
 	self assert: soMethod class equals: SoMethod.
 ]
 
-{ #category : #tests }
+{ #category : #'tests -  instructions' }
+SoDecompilerTest >> testGotoInstructionKnowsItsTargetBlock [
+	| soMethod |
+	soMethod := SoMethodDecompiler decompile: (SoExamples >> #exampleArrayAsArg).
+	self assert: soMethod basicBlocks fourth firstInstr targetBasicBlock equals: soMethod basicBlocks third
+]
+
+{ #category : #'tests -  instructions' }
+SoDecompilerTest >> testInstructionRefersToTheirMethod [ 
+	| soMethod |
+	soMethod := SoMethodDecompiler decompile: (SoExamples >> #exampleArrayAsArg).
+	soMethod basicBlocks do: 
+		[:bb | bb instructionsDo: [ :instr | self assert: instr codeNode = soMethod ]]
+]
+
+{ #category : #'tests - basic blocks' }
 SoDecompilerTest >> testSimpleBasicBlockDoesNotHavePredecessors [
 	| soMethod |
 	soMethod := SoMethodDecompiler decompile: (SoExamples >> #iv2).

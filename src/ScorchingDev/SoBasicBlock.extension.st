@@ -66,6 +66,17 @@ SoBasicBlock >> instructions [
 ]
 
 { #category : #'*ScorchingDev' }
+SoBasicBlock >> isEqualsTo: anotherBasicBlock [
+
+	^ self class = anotherBasicBlock class 
+			and: [ | res | 
+					self instructions 
+						with: anotherBasicBlock instructions 
+						do: [ :inst1 :inst2 | res := inst1 printString = inst2 printString ]. 
+					res ]
+]
+
+{ #category : #'*ScorchingDev' }
 SoBasicBlock >> printOn: s [
 	s << 'BasicBlock ' << self printingNumber
 ]
