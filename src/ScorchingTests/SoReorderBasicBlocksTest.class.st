@@ -48,3 +48,28 @@ SoReorderBasicBlocksTest >> testBasicNoReorderIsEqualsTo [
 	self assert: original basicBlocks first predecessors asArray equals: #().
 	self assert: (original basicBlocks first isEqualsTo: reorderedMethod basicBlocks first)
 ]
+
+{ #category : #tests }
+SoReorderBasicBlocksTest >> testExampleSafePeelUsedAfter [
+
+	| reorderedMethod original |
+	original := self soMethodOf: (SoExamples>> #exampleSafePeelUsedAfter).
+	reorderedMethod := self reorder: (SoExamples>> #exampleSafePeelUsedAfter).
+	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
+	self assert: original basicBlocks size equals: 4.
+	original basicBlocks with:  reorderedMethod basicBlocks do: 	
+			[ :bb1 :bb2 |  self assert: (bb1 isEqualsTo: bb2) ]
+]
+
+{ #category : #tests }
+SoReorderBasicBlocksTest >> testGetNastyCollection [
+
+	| reorderedMethod original |
+	original := self soMethodOf: (SoExamples>> #getNastyCollection).
+	reorderedMethod := self reorder: (SoExamples>> #getNastyCollection).
+	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
+	self assert: original basicBlocks size equals: 22.
+	original basicBlocks with:  reorderedMethod basicBlocks do: 	
+			[ :bb1 :bb2 |  self assert: (bb1 isEqualsTo: bb2) ]
+	self halt.
+]
