@@ -8,7 +8,9 @@ SmalltalkCISpec {
   ],
   #testing : {
     #coverage : {
-      #packages : [ 'Scorch' ]
+      #packages : [ 'Scorching' ]
     }
+    #exclude : {
+      #packages : [ 'ScorchingVMTest.*' ],
   }
 }
