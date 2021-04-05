@@ -90,6 +90,7 @@ SoReorderBasicBlocksTest >> testReorderingDoesNotChangeBasicBlocksNumber [
 SoReorderBasicBlocksTest >> testSimpleCollection [
 
 	| reorderedMethod original |
+	self skip.
 	original := self soMethodOf: (SoExamples>> #simpleCollection).
 	reorderedMethod := self reorder: (SoExamples>> #simpleCollection).
 

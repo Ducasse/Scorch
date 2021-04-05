@@ -105,7 +105,6 @@ SoReorderBasicBlocks >> reorderBasicBlocks: codeNode [
 	"I'm the main entry of the class. codeNode is a soMethod, i.e. a method containing basic blocks.
 	My arg (its basicblocks) gets modified in place."
 	 	
-	self halt.
 	self traverseBasicBlock: codeNode basicBlocks first.
 	codeNode basicBlocks: basicBlocksOrdered.
 	"The reject is here because else partial reordering may duplicate some basicBlocks in the methodNode..."
