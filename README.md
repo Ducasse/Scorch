@@ -26,17 +26,12 @@ As all alpha releases, it is reserved for VM developers (the release is not rele
 
 ## Past activity
 
+- This repository has been moved from Smalltalk-hub to github March 13th 2018.
+- For all the activity in-between Jun 2016-March 2018, check http://smalltalkhub.com/#!/~ClementBera/Scorch
+- For all the activity in-between May 2013-Jun 2016, check http://smalltalkhub.com/#!/~mate/sista
+- Clément was not involved in the project before May 2013.
 
-
-This repository has been moved from Smalltalk-hub to github March 13th 2018.
-
-For all the activity in-between Jun 2016-March 2018, check http://smalltalkhub.com/#!/~ClementBera/Scorch
-
-For all the activity in-between May 2013-Jun 2016, check http://smalltalkhub.com/#!/~mate/sista
-
-I was not involved in the project before May 2013 so I have no idea where activity before May 2013 is.
-
-## Using the Sista runtime
+## Old notes for: Using the Sista runtime
 
 Loading scripts:
 
@@ -65,8 +60,8 @@ After loading the configuration in your image, workspaces will appear with expla
 
 ## Repository organization
 
-- repository includes Scorch's Smalltalk code
-- spec includes the specification of unsafe operations in JSON format with a class to ease parsing.
-
-- Master is release branch
-- Development is my branch
+- The repository includes Scorch's Smalltalk code.
+- The folder spec includes the specification of unsafe operations in JSON format with a class to ease parsing.
+- 
+- Master is release branch.
+- Development is development branch.
