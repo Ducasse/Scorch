@@ -148,8 +148,9 @@ SoDecompilerTest >> testSimpleBasicBlockDoesNotHavePredecessors [
 { #category : #'tests - basic blocks' }
 SoDecompilerTest >> testSimpleCollection [
 
-	| original firstBlock |
+	| original basicBlocks |
 	original := self soMethodOf: (SoExamples>> #simpleCollection).
+	basicBlocks := original basicBlocks.
 	
 	"Preds: #(). Dom: None
 [1.1] Gbl:OrderedCollection.
@@ -191,21 +192,19 @@ Preds: #(2). Dom: None
 [7.1] ^ [2.1].
 "
 
-	self assert: original basicBlocks size equals: 7.
-	firstBlock := original basicBlocks first.
-	self assert: firstBlock successors first equals:  original basicBlocks second.
-	self assert: original basicBlocks last successors isEmpty.
-	
-	self halt.
+	self assert: basicBlocks size equals: 7.
+	self assert: basicBlocks first predecessors isEmpty.
+	self assert: basicBlocks last successors isEmpty.
+
 	
 ]
 
 { #category : #'tests - basic blocks' }
 SoDecompilerTest >> testSuccessors [
 
-	| original firstBlock |
+	| original basicBlocks |
 	original := self soMethodOf: (SoExamples>> #simpleCollection).
-	
+	basicBlocks := original basicBlocks.
 	"Preds: #(). Dom: None
 [1.1] Gbl:OrderedCollection.
 [1.2] (S)  [1.1] new.
@@ -245,20 +244,19 @@ Preds: #(3). Dom: None
 Preds: #(2). Dom: None
 [7.1] ^ [2.1].
 "
+	
+	"BB1 had goto: 2"
+	self assert: basicBlocks first successors size equals: 1.
+	self assert: basicBlocks first successors first equals:  original basicBlocks second.
+	
+	"BB2 is branching to 3 and 7"
+	self assert: basicBlocks second successors size equals: 2.
+	self assert: basicBlocks second successors first bbNumber equals: 3.
+	self assert: basicBlocks second successors second bbNumber equals: 7.
+	
+	"BB5 has a backJump to 2"
+	self assert: basicBlocks fifth successors size equals: 1.
+	self assert: basicBlocks fifth successors first bbNumber equals: 2.
 
-	self assert: original basicBlocks size equals: 7.
-	firstBlock := original basicBlocks first.
-	self assert: firstBlock successors first equals:  original basicBlocks second.
-	
-	self assert: original basicBlocks last successors isEmpty.
-	
-	self assert: original basicBlocks second successors size equals: 2.
-	
-	self assert: original basicBlocks third successors size equals: 2.
-	
-	self assert: original basicBlocks fourth successors size equals: 1. 
-	"just a goto."
-	
-	self halt.
 	
 ]
