@@ -3,7 +3,6 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/license-MIT-blue.svg)
 ![https://github.com/Ducasse/Scorch/workflows/currentPharoDev/badge.svg](https://github.com/Ducasse/Scorch/workflows/currentPharoDev/badge.svg)
-
 [![Coverage Status](https://coveralls.io/repos/github/Ducasse/Scorch/badge.svg?branch=master)](https://coveralls.io/github/Ducasse/Scorch?branch=master)
 
 
@@ -16,6 +15,7 @@ Scorch is the adaptive optimizer written in Smalltalk, it is compatible with the
 ## Status: Improving coverage
 
 Since beginning of 2021, S. Ducasse is writing tests, cleaning code to work with Pharo90, improving class and method comments.
+The executed tests and coverage only include so far tests without a Sista enabled VM. VM specific tests will come in a second phase.
 
 
 ## Old Status: Open alpha release
