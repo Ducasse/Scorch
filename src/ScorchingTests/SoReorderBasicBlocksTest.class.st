@@ -37,7 +37,7 @@ SoReorderBasicBlocksTest >> testBasicNoReorder [
 ]
 
 { #category : #tests }
-SoReorderBasicBlocksTest >> testBasicNoReorderIsEqualsTo [
+SoReorderBasicBlocksTest >> testBasicNoReorderWithIsEqualsTo [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #iv2).
@@ -71,5 +71,29 @@ SoReorderBasicBlocksTest >> testGetNastyCollection [
 	self assert: original basicBlocks size equals: 22.
 	original basicBlocks with:  reorderedMethod basicBlocks do: 	
 			[ :bb1 :bb2 |  self assert: (bb1 isEqualsTo: bb2) ]
+	self halt.
+]
+
+{ #category : #tests }
+SoReorderBasicBlocksTest >> testReorderingDoesNotChangeBasicBlocksNumber [
+
+	| reorderedMethod original |
+	original := self soMethodOf: (SoExamples>> #getNastyCollection).
+	reorderedMethod := self reorder: (SoExamples>> #getNastyCollection).
+	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
+	self assert: original basicBlocks size equals: 22.
+	
+]
+
+{ #category : #tests }
+SoReorderBasicBlocksTest >> testSimpleCollection [
+
+	| reorderedMethod original |
+	original := self soMethodOf: (SoExamples>> #simpleCollection).
+	reorderedMethod := self reorder: (SoExamples>> #simpleCollection).
+	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
+	self assert: original basicBlocks size equals: 7.
+	original basicBlocks with:  reorderedMethod basicBlocks do: 	
+			[ :bb1 :bb2 |  self assert: (bb1 isEqualsTo: bb2) ].
 	self halt.
 ]

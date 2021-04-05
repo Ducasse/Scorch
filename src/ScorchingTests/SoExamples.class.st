@@ -2100,6 +2100,15 @@ SoExamples >> runAndReturnBlock: aBlock [
 	^ [ 1 + 2 ]
 ]
 
+{ #category : #'example - collection' }
+SoExamples >> simpleCollection [
+	| col |
+	col := OrderedCollection new.
+	1 to: 100 atRandom do: [ :i |
+		i \\ 11 = 0 ifTrue: [ col add: { i asFloat . i asFloat } ] ].
+	^ col
+]
+
 { #category : #'examples - sendAndBranchData' }
 SoExamples >> specialData [
 	"Run this script to know expected sendAndBranchDatas values from the VM:

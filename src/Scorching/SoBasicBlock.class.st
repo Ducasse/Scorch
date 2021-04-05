@@ -1,13 +1,16 @@
 "
 I represent a sequence of instructions executed successfully without control flow operations (the only exception is macro instruction such as trapIfNotInstanceOf, which is an instruction wrapping control flow operations).
 
-The sequence of instruction is held as a linkedList. The linked list can be iterated forward or backward through the instance variable firstInstr and lastInstr. LinkedList is better than OrderedCollection as the sequence of instruction is very often edited by inserting instructions in the middle.
+The sequence of instructions is held as a linkedList. The linked list can be iterated forward or backward through the instance variable `firstInstr` and `lastInstr`. LinkedList is better than OrderedCollection as the sequence of instruction is very often edited by inserting instructions in the middle.
 
-Control flow between basic block is heavily canonicalized and that needs to be maintained (critical edges are split, etc).
+Control flow between basic block` is heavily canonicalized and that needs to be maintained (critical edges are split, etc).
 
 The sequence of instructions has several constraints:
-- phis are always the first instructions of a basicBlock.
-- the last instruction is always a CFG instruction while body instruction cannot be CFG instructions.
+- phis are always the first instructions of a basicBlock (since they represent input from other blocks).
+- the last instruction is always a CFG instruction while body instructions cannot be CFG instructions.
+
+
+## Implementation
 
 Instance Variables
 	firstInstr:		<AbsInstruction> first instruction in the sequence of instruction

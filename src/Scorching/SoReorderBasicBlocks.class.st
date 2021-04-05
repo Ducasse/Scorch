@@ -1,10 +1,20 @@
 "
-I reorder the basicblocks for data optimizations and bytecode generation: This is a postOrderTraversal, but in addition, loop bodies are kept contiguous.
+I reorder the basicblocks of a `SoMethod` for data optimizations and bytecode generation: This is a postOrderTraversal, but in addition, loop bodies are kept contiguous. I modify in place the soMethod that I reorganize. I do not add or eliminate any basic blocks. In addition assign a postOrder value to the basic I treat.
+
+postOrder traversal is (Left, Right, Root) : 4 5 2 3 1
+```
+		 1	
+	 /	 \
+	2		  3
+/  \
+4	  5
+```
 
 ## Implementation
 
 - `basicBlocksOrdered` <Collection of BasicBlock> the basicBlocks of the codeNode in the right order that will be set to the codeNode once the pass has been run.
 - `workList` <Collection of BasicBlock> the basicBlocks that need to be processed by the algorithm (the graph is traversed in control flow order).
+- `loops`  <Collection of BasicBlock> keeps a list of basic blocks.
 "
 Class {
 	#name : #SoReorderBasicBlocks,
@@ -37,14 +47,14 @@ SoReorderBasicBlocks >> canExecute: basicBlock [
 ]
 
 { #category : #private }
-SoReorderBasicBlocks >> computeNextBlockToVisit: aNode [
-
-	aNode successors ifEmpty: [ ^ self restartFromBranch ].
+SoReorderBasicBlocks >> computeNextBlockToVisit: aBasicBlock [
+	"If the arg does not have successors, then pick a branch "
 	
-	aNode hasBackwardPredecessor ifTrue: [ self setLoops: aNode ].
-	
-	workList addAllFirst: aNode lastInstr successors.
-		
+	aBasicBlock successors 
+		ifEmpty: [ ^ self restartFromBranch ].
+	aBasicBlock hasBackwardPredecessor 
+		ifTrue: [ self setLoops: aBasicBlock ].
+	workList addAllFirst: aBasicBlock lastInstr successors.
 	self restartFromBranch
 ]
 
@@ -90,7 +100,11 @@ SoReorderBasicBlocks >> popFromLoops: aNode [
 ]
 
 { #category : #public }
-SoReorderBasicBlocks >> reorderBasicBlocks: codeNode [ 	
+SoReorderBasicBlocks >> reorderBasicBlocks: codeNode [
+	"I'm the main entry of the class. codeNode is a soMethod, i.e. a method containing basic blocks.
+	My arg (its basicblocks) gets modified in place."
+	 	
+	self halt.
 	self traverseBasicBlock: codeNode basicBlocks first.
 	codeNode basicBlocks: basicBlocksOrdered.
 	"The reject is here because else partial reordering may duplicate some basicBlocks in the methodNode..."
@@ -126,6 +140,7 @@ SoReorderBasicBlocks >> setLoops: basicBlock [
 
 { #category : #private }
 SoReorderBasicBlocks >> trace: bj to: basicBlock [
+
 	| trace workList1 top |
 	trace := OrderedCollection new.
 	workList1 := OrderedCollection with: bj.
