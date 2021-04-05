@@ -40,7 +40,10 @@ SoReorderBasicBlocks >> basicBlocksOrdered: aValue [
 ]
 
 { #category : #private }
-SoReorderBasicBlocks >> canExecute: basicBlock [ 	
+SoReorderBasicBlocks >> canExecute: basicBlock [
+	"If all the predecessors have been handled, and basicBlock is currently on loops then it is ok to handle it."
+	self flag: #todo. "rename me"
+	
 	^ (basicBlock forwardPredecessors allSatisfy: [ :bb | basicBlocksOrdered includes: bb ])
 		and: [ loops isEmpty 
 			or: [loops last includes: basicBlock ] ]
@@ -50,7 +53,7 @@ SoReorderBasicBlocks >> canExecute: basicBlock [
 SoReorderBasicBlocks >> computeNextBlockToVisit: aBasicBlock [
 	"If the arg does not have successors, then pick a branch.
 	Before adding aBasicBlock successors to the workList, add the basicBlock to the list of loops target if necessary."
-	
+
 	aBasicBlock successors 
 		ifEmpty: [ ^ self restartFromBranch ].
 	aBasicBlock hasBackwardPredecessor 
@@ -92,9 +95,26 @@ SoReorderBasicBlocks >> nextBasicBlockToProcess [
 ]
 
 { #category : #private }
-SoReorderBasicBlocks >> popFromLoops: aNode [
+SoReorderBasicBlocks >> pendingBlocksFromBackJump: backJump to: basicBlock [
+	"Compute all the blocks from backJump to basicBlock following predecessors."
+	
+	| trace workList1 top |
+	trace := OrderedCollection new.
+	workList1 := OrderedCollection with: backJump.
+	[ workList1 isEmpty ] whileFalse: [ 
+		top := workList1 removeLast.
+		(trace includes: top) ifFalse: [ 
+			trace add: top.
+			top == basicBlock ifFalse: [ workList1 addAll: top predecessors ] ]  ].
+	^ trace
+]
+
+{ #category : #private }
+SoReorderBasicBlocks >> popFromLoops: aBasicBlock [
+	"Remove the argument from all the loop bodies."
+	
 	loops do: [ :each |
-		each remove: aNode ].
+		each remove: aBasicBlock ].
 	[ loops isEmpty ifTrue: [ ^ self ]. 
 	loops last isEmpty ] whileTrue: [ 
 		loops removeLast ].
@@ -107,6 +127,7 @@ SoReorderBasicBlocks >> reorderBasicBlocks: codeNode [
 	 	
 	self traverseBasicBlock: codeNode basicBlocks first.
 	codeNode basicBlocks: basicBlocksOrdered.
+	self flag: #todo. "Clean comment"
 	"The reject is here because else partial reordering may duplicate some basicBlocks in the methodNode..."
 	"superBB basicBlocks: (basicBlocksOrdered select: [ :bb | superBB basicBlocks includes: bb ]).
 	self assert: (superBB basicBlocks allSatisfy: [ :e | e postOrder notNil ])"
@@ -131,27 +152,15 @@ SoReorderBasicBlocks >> runOn: codeNode [
 ]
 
 { #category : #private }
-SoReorderBasicBlocks >> setLoops: basicBlock [ 
+SoReorderBasicBlocks >> setLoops: basicBlock [
+	"Put as block that should be treated as part of a loop, the blocks that are predecessors of backjump to the argument and that are not already handled."
+	
 	| trace |
-	trace := (self trace: basicBlock backwardPredecessor to: basicBlock) asSet.
+	trace := (self pendingBlocksFromBackJump: basicBlock backwardPredecessor to: basicBlock) asSet.
 	basicBlocksOrdered do: [ :bb | 
 		trace remove: bb ifAbsent: [] ].
 	trace ifEmpty: [ ^ self ].
 	loops add: trace. 
-]
-
-{ #category : #private }
-SoReorderBasicBlocks >> trace: bj to: basicBlock [
-
-	| trace workList1 top |
-	trace := OrderedCollection new.
-	workList1 := OrderedCollection with: bj.
-	[ workList1 isEmpty ] whileFalse: [ 
-		top := workList1 removeLast.
-		(trace includes: top) ifFalse: [ 
-			trace add: top.
-			top == basicBlock ifFalse: [ workList1 addAll: top predecessors ] ]  ].
-	^ trace
 ]
 
 { #category : #visiting }
