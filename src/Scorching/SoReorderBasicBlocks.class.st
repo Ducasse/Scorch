@@ -48,7 +48,8 @@ SoReorderBasicBlocks >> canExecute: basicBlock [
 
 { #category : #private }
 SoReorderBasicBlocks >> computeNextBlockToVisit: aBasicBlock [
-	"If the arg does not have successors, then pick a branch "
+	"If the arg does not have successors, then pick a branch.
+	Before adding aBasicBlock successors to the workList, add the basicBlock to the list of loops target if necessary."
 	
 	aBasicBlock successors 
 		ifEmpty: [ ^ self restartFromBranch ].
@@ -81,8 +82,8 @@ SoReorderBasicBlocks >> loops: aValue [
 
 { #category : #private }
 SoReorderBasicBlocks >> nextBasicBlockToProcess [
-	"Find a basicblock in the work list which has all its non back jump 
-	predecessor process. Restart bytecode generation form there."
+	"Find a basicblock in the workList which has all its non-back jump 
+	predecessors processed. Restart bytecode generation form there."
 	
 	^ workList 
 		detect: [ :basicBlock | self canExecute: basicBlock ] 
@@ -113,7 +114,9 @@ SoReorderBasicBlocks >> reorderBasicBlocks: codeNode [
 ]
 
 { #category : #private }
-SoReorderBasicBlocks >> restartFromBranch [  
+SoReorderBasicBlocks >> restartFromBranch [
+	"Check if there is basicBlock to handle (held in worklist), in that case identify the next one, remove it from the work list and handle it."
+	
 	| basicBlock |
 	workList ifEmpty: [ ^ self ].
 	basicBlock := self nextBasicBlockToProcess.
