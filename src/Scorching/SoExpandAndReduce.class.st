@@ -2,7 +2,7 @@
 Run at the end of the optimization and before bytecode generation, I expand macro instructions (which cannot be generated to bytecode) and reduce canonicalized return instructions.
 
 Currently my main use is to:
-- expand the macro instruction trapIfNotInstanceOf to branhcIfNotInstanceOf AND immediate traps.
+- expand the macro instruction trapIfNotInstanceOf to branchIfNotInstanceOf AND immediate traps.
 - move up return instructions across phis, to have multiple return instructions instead of having jumps to returns.
 - rotate branchIfNotInstanceOf / boolean branch on boolean for better branch prediction / branch jitting by Cogit.
 
