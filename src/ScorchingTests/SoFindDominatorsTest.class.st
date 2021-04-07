@@ -58,12 +58,14 @@ Preds: #(2).
 "        1   
 			|
 			2 _____ 7 
-			|  
-			3
-		/		\
-		4		6
-		 \    /
-		   5	
+			|  \
+			3   \
+		/		\ \
+		4		6  \
+		 \    /  /
+		   \ 	/  /
+			   5
+			
 			"	
 	
 	reorderedMethod := self runFor: (SoExamples>> #simpleCollection).

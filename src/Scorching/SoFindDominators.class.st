@@ -1,6 +1,27 @@
 "
-I set correctly the dominators to the basicBlocks. This algorithm was ported from a C implementation. 
-This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm or others (see ""A simple fast dominance algorithm"" article). 
+I set correctly the dominators to the basicBlocks. It implements a traditional (iterative) algorithm often described in books as
+
+Initialization
+
+n := |N| -1
+Dom(0) := {0}
+for i (1 to n)
+	Dom (i) = N
+	
+Iteration
+
+change := true
+while (changed)
+    changed := false.
+    for i (1 to n)
+		tmp := {i} Union (Intersection  Dom (j) where i belong to predecessors of i)
+		if tmpe /= Dom (i) then
+				Dom (i) := temp
+				changed := true	
+
+
+Original comment was: ""This algorithm was ported from a C implementation. 
+This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm"" or others (see ""A simple fast dominance algorithm"" article). 
 However, as the size of the CFG is usually limited, it's usually good enough.
 
 
@@ -29,7 +50,9 @@ Class {
 { #category : #private }
 SoFindDominators >> computeDominators: blocks [
 	
-	| change tmpSet block prevs |
+	| change tmpSet block preds |
+	
+	"initialization"
 	change := true.
 	dominators := Array new: blocks size.
 	dominators at: 1 put: blocks first asOrderedCollection.
@@ -43,9 +66,9 @@ SoFindDominators >> computeDominators: blocks [
 		2 to: blocks size do: [ :i |
 			block := blocks at: i.
 			tmpSet := tmpSet copy. 
-			prevs := block predecessors.
-			1 to: prevs size do: [ :j |
-				tmpSet := tmpSet intersection: (dominators at: (prevs at: j) tempData) ].
+			preds := block predecessors.
+			1 to: preds size do: [ :j |
+				tmpSet := tmpSet intersection: (dominators at: (preds at: j) tempData) ].
 			tmpSet add: block.
 			tmpSet = (dominators at: block tempData) ifFalse: [ 
 				change := true.
@@ -87,13 +110,13 @@ SoFindDominators >> computeImmediateDominators: blocks [
 
 { #category : #accessing }
 SoFindDominators >> dominators [
-	<generated>
+	
 	^ dominators
 ]
 
 { #category : #accessing }
 SoFindDominators >> dominators: aValue [
-	<generated>
+
 	dominators := aValue
 ]
 
