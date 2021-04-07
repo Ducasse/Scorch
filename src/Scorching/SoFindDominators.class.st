@@ -1,13 +1,15 @@
 "
 I set correctly the dominators to the basicBlocks. This algorithm was ported from a C implementation. 
-This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm. 
+This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm or others (see ""A simple fast dominance algorithm"" article). 
 However, as the size of the CFG is usually limited, it's usually good enough.
 
+
+## Implementation
 The implementation was on purpose rewritten using optimized constructs (`to:do:`) instead of `do:`, because 20% of the time (of the whole optimizer) was spent in `SequenceableCollection>>#do:` and this algorithm is performance critical. 
 The variables are declared outside of loops because it avoids the push nil at each iteration.
-`tempData` of a basic block is used to number the basic blocks: see `SoFindDominators>>#setBasicBlocksNumbers:`.
+`tempData` of a basic block is used to number the basic blocks: see `SoFindDominators>>#setBasicBlockNumbers:`.
 
-2 passes:
+It is composed of 2 passes:
 - pass 1 (`computeDominators:`) computes all the dominators of each basicblock.
 - pass 2 (`computeImmediateDominators:`) computes the immediate dominator out of the dominators found in pass 1.
 

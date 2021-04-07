@@ -1,23 +1,13 @@
 Class {
 	#name : #SoReorderBasicBlocksTest,
-	#superclass : #TestCase,
+	#superclass : #SoPassTest,
 	#category : #'ScorchingTests-NewUnit'
 }
 
 { #category : #helpers }
-SoReorderBasicBlocksTest >> reorder: aCompiledMethod [
+SoReorderBasicBlocksTest >> passClass [
 
-	| soMethod |
-	soMethod := self soMethodOf: aCompiledMethod.
-	SoReorderBasicBlocks new runOn: soMethod.
-	^ soMethod
-]
-
-{ #category : #helpers }
-SoReorderBasicBlocksTest >> soMethodOf: aCompiledMethod [
-
-	^ SoMethodDecompiler decompile: aCompiledMethod
-	
+	^ SoReorderBasicBlocks
 ]
 
 { #category : #'tests - no reordering' }
@@ -25,7 +15,7 @@ SoReorderBasicBlocksTest >> testBasicNoReorder [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #iv2).
-	reorderedMethod := self reorder: (SoExamples>> #iv2).
+	reorderedMethod := self runFor: (SoExamples>> #iv2).
 	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
 	self assert: original basicBlocks size equals: 1.
 	self assert: original basicBlocks first predecessors equals: reorderedMethod basicBlocks first predecessors.
@@ -41,7 +31,7 @@ SoReorderBasicBlocksTest >> testBasicNoReorderWithIsEqualsTo [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #iv2).
-	reorderedMethod := self reorder: (SoExamples>> #iv2).
+	reorderedMethod := self runFor: (SoExamples>> #iv2).
 	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
 	self assert: original basicBlocks size equals: 1.
 	self assert: original basicBlocks first predecessors equals: reorderedMethod basicBlocks first predecessors.
@@ -54,7 +44,7 @@ SoReorderBasicBlocksTest >> testExampleSafePeelUsedAfter [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #exampleSafePeelUsedAfter).
-	reorderedMethod := self reorder: (SoExamples>> #exampleSafePeelUsedAfter).
+	reorderedMethod := self runFor: (SoExamples>> #exampleSafePeelUsedAfter).
 	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
 	self assert: original basicBlocks size equals: 4.
 	original basicBlocks with:  reorderedMethod basicBlocks do: 	
@@ -66,9 +56,10 @@ SoReorderBasicBlocksTest >> testGetNastyCollection [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #getNastyCollection).
-	reorderedMethod := self reorder: (SoExamples>> #getNastyCollection).
+	reorderedMethod := self runFor: (SoExamples>> #getNastyCollection).
 	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
 	self assert: original basicBlocks size equals: 22.
+	self halt.
 
 	"Not really satisfactory.
 	But the algorithm has not been made to be tested. Probably a subclass could be a solution"
@@ -79,7 +70,7 @@ SoReorderBasicBlocksTest >> testReorderingDoesNotChangeBasicBlocksNumber [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #getNastyCollection).
-	reorderedMethod := self reorder: (SoExamples>> #getNastyCollection).
+	reorderedMethod := self runFor: (SoExamples>> #getNastyCollection).
 	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
 	self assert: original basicBlocks size equals: 22.
 	
@@ -90,8 +81,7 @@ SoReorderBasicBlocksTest >> testSimpleCollection [
 
 	| reorderedMethod original |
 	original := self soMethodOf: (SoExamples>> #simpleCollection).
-	reorderedMethod := self reorder: (SoExamples>> #simpleCollection).
-
+	reorderedMethod := self runFor: (SoExamples>> #simpleCollection).
 
 "Preds: #(). Dom: None
 [1.1] Gbl:OrderedCollection.

@@ -1,6 +1,18 @@
 "
-I reorder the basicblocks of a `SoMethod` for data optimizations and bytecode generation: This is a postOrderTraversal, but in addition, loop bodies are kept contiguous. I modify in place the soMethod that I reorganize. I do not add or eliminate any basic blocks. In addition assign a postOrder value to the basic I treat.
+I reorder the basicblocks of a `SoMethod` for data optimizations and bytecode generation.
+I modify in place the soMethod that I reorganize. I do not add or eliminate any basic blocks. In addition assign a postOrder value to the basic I treat.
 
+
+The original comment states: ""This is a postOrderTraversal, but in addition, loop bodies are kept contiguous."" However, basic blocks are treated as they come with pending successors added in as first entities in a worklist.
+
+
+## Implementation
+
+- `basicBlocksOrdered` <Collection of BasicBlock> the basicBlocks of the codeNode in the right order that will be set to the codeNode once the pass has been run.
+- `workList` <Collection of BasicBlock> the basicBlocks that need to be processed by the algorithm (the graph is traversed in control flow order).
+- `loops`  <Collection of BasicBlock> keeps a list of basic blocks.
+
+## Reminder
 postOrder traversal is (Left, Right, Root) : 4 5 2 3 1
 ```
 		 1	
@@ -9,12 +21,6 @@ postOrder traversal is (Left, Right, Root) : 4 5 2 3 1
 /  \
 4	  5
 ```
-
-## Implementation
-
-- `basicBlocksOrdered` <Collection of BasicBlock> the basicBlocks of the codeNode in the right order that will be set to the codeNode once the pass has been run.
-- `workList` <Collection of BasicBlock> the basicBlocks that need to be processed by the algorithm (the graph is traversed in control flow order).
-- `loops`  <Collection of BasicBlock> keeps a list of basic blocks.
 "
 Class {
 	#name : #SoReorderBasicBlocks,
@@ -29,13 +35,13 @@ Class {
 
 { #category : #accessing }
 SoReorderBasicBlocks >> basicBlocksOrdered [
-	<generated>
+
 	^ basicBlocksOrdered
 ]
 
 { #category : #accessing }
 SoReorderBasicBlocks >> basicBlocksOrdered: aValue [
-	<generated>
+
 	basicBlocksOrdered := aValue
 ]
 
@@ -46,7 +52,7 @@ SoReorderBasicBlocks >> canExecute: basicBlock [
 	
 	^ (basicBlock forwardPredecessors allSatisfy: [ :bb | basicBlocksOrdered includes: bb ])
 		and: [ loops isEmpty 
-			or: [loops last includes: basicBlock ] ]
+			or: [ loops last includes: basicBlock ] ]
 ]
 
 { #category : #private }
@@ -58,7 +64,7 @@ SoReorderBasicBlocks >> computeNextBlockToVisit: aBasicBlock [
 		ifEmpty: [ ^ self restartFromBranch ].
 	aBasicBlock hasBackwardPredecessor 
 		ifTrue: [ self setLoops: aBasicBlock ].
-	workList addAllFirst: aBasicBlock lastInstr successors.
+	workList addAllFirst: aBasicBlock successors.
 	self restartFromBranch
 ]
 
@@ -127,10 +133,7 @@ SoReorderBasicBlocks >> reorderBasicBlocks: codeNode [
 	 	
 	self traverseBasicBlock: codeNode basicBlocks first.
 	codeNode basicBlocks: basicBlocksOrdered.
-	self flag: #todo. "Clean comment"
-	"The reject is here because else partial reordering may duplicate some basicBlocks in the methodNode..."
-	"superBB basicBlocks: (basicBlocksOrdered select: [ :bb | superBB basicBlocks includes: bb ]).
-	self assert: (superBB basicBlocks allSatisfy: [ :e | e postOrder notNil ])"
+
 ]
 
 { #category : #private }
@@ -176,12 +179,12 @@ SoReorderBasicBlocks >> traverseBasicBlock: basicBlock [
 
 { #category : #accessing }
 SoReorderBasicBlocks >> workList [
-	<generated>
+	
 	^ workList
 ]
 
 { #category : #accessing }
 SoReorderBasicBlocks >> workList: aValue [
-	<generated>
+
 	workList := aValue
 ]

@@ -222,6 +222,7 @@ SoBytecodeBuilder >> genBlockReturn [
 { #category : #results }
 SoBytecodeBuilder >> genBytecodes [
 	| bytes |
+	self flag: #tofix.
 	bytes := self basicGenBytecodes.
 	(self encoderClass isReturnByte: bytes last) ifFalse: 
 		[ bytes := bytes , {self encoderClass returnSelfByte} ].
