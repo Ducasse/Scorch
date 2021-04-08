@@ -59,7 +59,6 @@ SoReorderBasicBlocksTest >> testGetNastyCollection [
 	reorderedMethod := self runFor: (SoExamples>> #getNastyCollection).
 	self assert: original basicBlocks size equals: reorderedMethod basicBlocks size.
 	self assert: original basicBlocks size equals: 22.
-	self halt.
 
 	"Not really satisfactory.
 	But the algorithm has not been made to be tested. Probably a subclass could be a solution"

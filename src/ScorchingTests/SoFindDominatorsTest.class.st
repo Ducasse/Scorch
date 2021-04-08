@@ -67,7 +67,7 @@ Preds: #(2).
 			   5
 			
 			"	
-	
+
 	reorderedMethod := self runFor: (SoExamples>> #simpleCollection).
 	basicBlocks := reorderedMethod basicBlocks.
 	self assert: basicBlocks first dominator isNil.
