@@ -1,6 +1,14 @@
 "
-I set correctly the dominators to the basicBlocks. It implements a traditional (iterative) algorithm often described in books as
+I set correctly the dominators to the basicBlocks. 
 
+Original comment was: ""This algorithm was ported from a C implementation. 
+This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm""
+
+
+A traditional (iterative) algorithm is described in books as the following. 
+page 479-480 of ""Engineering a compiler"". An alternative implementation  is described ""A simple fast dominance algorithm"" article, p 532 of the same book. 
+
+```
 Initialization
 
 n := |N| -1
@@ -18,11 +26,7 @@ while (changed)
 		if tmpe /= Dom (i) then
 				Dom (i) := temp
 				changed := true	
-
-
-Original comment was: ""This algorithm was ported from a C implementation. 
-This algorithm is simple therefore it is slow for large CFG. For large CFG one would need to implement the Lengauer-Tarjan algorithm"" or others (see ""A simple fast dominance algorithm"" article). 
-However, as the size of the CFG is usually limited, it's usually good enough.
+```
 
 
 ## Implementation

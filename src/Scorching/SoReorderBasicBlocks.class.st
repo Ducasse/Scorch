@@ -13,6 +13,8 @@ The original comment states: ""This is a postOrderTraversal, but in addition, lo
 - `loops`  <Collection of BasicBlock> keeps a list of basic blocks.
 
 ## Reminder
+
+Just to remember postd order is the following and this is not what we are doing. 
 postOrder traversal is (Left, Right, Root) : 4 5 2 3 1
 ```
 		 1	
