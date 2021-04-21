@@ -38,12 +38,12 @@ It is composed of 2 passes:
 - pass 1 (`computeDominators:`) computes all the dominators of each basicblock.
 - pass 2 (`computeImmediateDominators:`) computes the immediate dominator out of the dominators found in pass 1.
 
-Assumes that the given basic blocks are in pre order traversal for efficiency, though it works in any case.
+Assumes that the given basic blocks are linearised in pre order traversal for efficiency. A non-preorder linearisation breaks this algorithm and yields incorrect results.
 
 	dominators	<Collection of Collection of basicBlocks> at the depthFirstOrder of each basic block a collection of its dominators is stored.
 "
 Class {
-	#name : #SoFindDominators,
+	#name : #SoSimpleFindDominators,
 	#superclass : #SoAbstractDominators,
 	#instVars : [
 		'dominators'
@@ -52,7 +52,7 @@ Class {
 }
 
 { #category : #private }
-SoFindDominators >> computeDominators: blocks [
+SoSimpleFindDominators >> computeDominators: blocks [
 	
 	| change tmpSet block preds |
 	
@@ -82,61 +82,75 @@ SoFindDominators >> computeDominators: blocks [
 ]
 
 { #category : #private }
-SoFindDominators >> computeImmediateDominators: blocks [
+SoSimpleFindDominators >> computeImmediateDominators: blocks [
 	"Precondition: computeDominators: already run."
 	
-	| toRemove iterator theDom |
-	
+	| toRemove theDom |
 	1 to: blocks size do: [ :i |
-		iterator := dominators at: i.
-		iterator remove: (blocks at: i).
-		dominators at: i put: iterator asOrderedCollection ].
+		| dominatorList |
+		dominatorList := dominators at: i.
+		dominatorList remove: (blocks at: i).
+		dominators at: i put: dominatorList asOrderedCollection ].
 	
 	toRemove := OrderedCollection new.
 	
-	2 to: blocks size do: [ :j |
+	1 to: blocks size do: [ :j |
+		| dominatorList |
 		toRemove reset.
-		iterator := dominators at: (blocks at: j) tempData.
-		1 to: iterator size do: [ :s |
-			1 to: iterator size do: [ :t |
+		dominatorList := dominators at: (blocks at: j) tempData.
+		1 to: dominatorList size do: [ :s |
+			1 to: dominatorList size do: [ :t |
 				t == s ifFalse: [
-					theDom := iterator at: t.
-					((dominators at: (iterator at: s) tempData) includes: theDom) 
+					theDom := dominatorList at: t.
+					((dominators at: (dominatorList at: s) tempData) includes: theDom) 
 						ifTrue: [ toRemove add: theDom ] ] ] ].
 		1 to: toRemove size do: [ :v |
-			iterator remove: (toRemove at: v) ifAbsent: nil ] ].
+			dominatorList remove: (toRemove at: v) ifAbsent: nil ] ].
 	
-	2 to: blocks size do: [ :k |
-		iterator := blocks at: k.
-		iterator dominator: (dominators at: iterator tempData) first ]
-	
+	1 to: blocks size do: [ :k |
+		| basicBlock |
+		basicBlock := blocks at: k.
+		(dominators at: basicBlock tempData) ifNotEmpty: [
+			basicBlock dominator: (dominators at: basicBlock tempData) first ] ]
 ]
 
 { #category : #accessing }
-SoFindDominators >> dominators [
+SoSimpleFindDominators >> dominators [
 	
 	^ dominators
 ]
 
 { #category : #accessing }
-SoFindDominators >> dominators: aValue [
+SoSimpleFindDominators >> dominators: aValue [
 
 	dominators := aValue
 ]
 
-{ #category : #public }
-SoFindDominators >> findDominators: basicBlocks [
+{ #category : #accessing }
+SoSimpleFindDominators >> dominatorsOf: aSoBasicBlock [ 
+	
+	^ dominators at: aSoBasicBlock tempData
+]
 
-	self setBasicBlockNumbers: basicBlocks.
+{ #category : #public }
+SoSimpleFindDominators >> findDominators: basicBlocks [
+
+	self numberBasicBlocks: basicBlocks.
 	self computeDominators: basicBlocks.
 	self computeImmediateDominators: basicBlocks.
 	
 ]
 
 { #category : #private }
-SoFindDominators >> setBasicBlockNumbers: basicBlocks [
+SoSimpleFindDominators >> numberBasicBlocks: basicBlocks [
 	"Number the basic blocks according to their position in the basicBlock collection."
 	
 	1 to: basicBlocks size do: [ :i |
 		(basicBlocks at: i) tempData: i ]
+]
+
+{ #category : #testing }
+SoSimpleFindDominators >> supportsRandomBlockOrder [
+	
+	^ false
 ]

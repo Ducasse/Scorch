@@ -1,6 +1,9 @@
 Class {
 	#name : #SoPassTest,
-	#superclass : #TestCase,
+	#superclass : #ParametrizedTestCase,
+	#instVars : [
+		'pass'
+	],
 	#category : #'ScorchingTests-NewUnit'
 }
 
@@ -9,8 +12,21 @@ SoPassTest >> runFor: aCompiledMethod [
 
 	| soMethod |
 	soMethod := self soMethodOf: aCompiledMethod.
-	self passClass new runOn: soMethod.
+	self runOnSoMethod: soMethod.
 	^ soMethod
+]
+
+{ #category : #helpers }
+SoPassTest >> runOnSoMethod: soMethod [
+
+	pass runOn: soMethod
+]
+
+{ #category : #helpers }
+SoPassTest >> setUp [
+
+	super setUp.
+	pass := self passClass new.
 ]
 
 { #category : #helpers }

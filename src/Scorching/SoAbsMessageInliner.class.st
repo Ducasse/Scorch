@@ -272,7 +272,7 @@ SoAbsMessageInliner >> prevBasicBlock: aValue [
 { #category : #'private - parsing' }
 SoAbsMessageInliner >> removeNLR: codeNode [
 	{ SoReorderBasicBlocks . 
-		SoNLRDominators . 
+		SoNonLocalReturnDominators . 
 		SoSimplifyPhis } do: [ :each | 
 			each new runOn: codeNode ].
 	SoCallGraphInliner new inlineQuietlySends: codeNode decompSends.

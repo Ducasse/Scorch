@@ -6,13 +6,13 @@ This class is used when inlining a method/block with a non-local return, because
 The pass is correct, as the entry always dominates all the basicblocks, but does not compute the best possible dominator tree. Typically, if the non-local return is inlined, the dominator tree is recomputed afterwards.
 "
 Class {
-	#name : #SoNLRDominators,
+	#name : #SoNonLocalReturnDominators,
 	#superclass : #SoAbstractDominators,
 	#category : #'Scorching-Pass-Utils'
 }
 
 { #category : #public }
-SoNLRDominators >> findDominators: basicBlocks [
+SoNonLocalReturnDominators >> findDominators: basicBlocks [
 	basicBlocks allButFirstDo: [ :bb | 
 		bb dominator: basicBlocks first ]
 ]

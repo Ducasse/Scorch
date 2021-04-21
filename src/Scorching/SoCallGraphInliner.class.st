@@ -382,7 +382,7 @@ SoCallGraphInliner >> newSmiTrap: other beforeSend: send [
 
 { #category : #accessing }
 SoCallGraphInliner >> passesBeforeInlining [
-	^ { SoReorderBasicBlocks . SoFindDominators . SoSimplifyPhis }
+	^ { SoReorderBasicBlocks . SoSimpleFindDominators . SoSimplifyPhis }
 ]
 
 { #category : #'inlining PIC' }

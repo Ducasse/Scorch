@@ -121,7 +121,7 @@ SoBuilder >> currentBasicBlock [
 
 { #category : #accessing }
 SoBuilder >> currentBasicBlock: aValue [
-	<generated>
+	
 	currentBasicBlock := aValue
 ]
 
@@ -254,13 +254,13 @@ SoBuilder >> return: instr level: level [
 
 { #category : #accessing }
 SoBuilder >> returnBasicBlock [
-	<generated>
+
 	^ returnBasicBlock
 ]
 
 { #category : #accessing }
 SoBuilder >> returnBasicBlock: aValue [
-	<generated>
+
 	returnBasicBlock := aValue
 ]
 

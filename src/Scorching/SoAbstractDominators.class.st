@@ -11,3 +11,9 @@ Class {
 SoAbstractDominators >> runOn: codeNode [
 	self findDominators: codeNode basicBlocks
 ]
+
+{ #category : #testing }
+SoAbstractDominators >> supportsRandomBlockOrder [
+	
+	^ self subclassResponsibility
+]

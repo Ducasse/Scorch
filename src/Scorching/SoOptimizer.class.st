@@ -57,7 +57,7 @@ SoOptimizer >> getFirstCodeNode: ctxtTripping [
 	ctxt := SoStackSearcher new searchCodeToOptimize: ctxtTripping.
 	self assert: ctxt method class == CompiledMethod. "We don't support block here right now"
 	codeNode := SoMethodDecompiler decompile: ctxt method context: ctxt.
-	{SoReorderBasicBlocks . SoFindDominators . SoSimplifyPhis} do: [ :each |
+	{SoReorderBasicBlocks . SoSimpleFindDominators . SoSimplifyPhis} do: [ :each |
 		each new runOn: codeNode ].
 	^ codeNode
 ]

@@ -276,7 +276,7 @@ SoValidator >> debug: method with: optimizedMethod [
 
 { #category : #private }
 SoValidator >> defaultSuperBBState [
-	^ { SoReorderBasicBlocks . SoFindDominators . SoSimplifyPhis }
+	^ { SoReorderBasicBlocks . SoSimpleFindDominators . SoSimplifyPhis }
 ]
 
 { #category : #asserting }

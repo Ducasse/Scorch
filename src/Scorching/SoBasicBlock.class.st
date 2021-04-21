@@ -188,13 +188,12 @@ SoBasicBlock >> instructionsReverseDo: aBlock [
 
 { #category : #accessing }
 SoBasicBlock >> lastInstr [
-	<generated>
 	^ lastInstr
 ]
 
 { #category : #accessing }
 SoBasicBlock >> lastInstr: aValue [
-	<generated>
+
 	lastInstr := aValue
 ]
 
