@@ -61,11 +61,11 @@ SoBranchIfNotInstanceOf >> literalIndexForBuilder: builder [
 
 { #category : #type }
 SoBranchIfNotInstanceOf >> maybeSpecifyType: typeFound for: send [
-	(trueBasicBlock dominatesInstr: send) ifTrue: [ 
+	(trueBasicBlock dominatesInstruction: send) ifTrue: [ 
 		"not one of the types trapped"
 		typeFound isKnownType ifFalse: [ ^ typeFound ].
 		^ (SoKnownType forArray: (typeFound behaviors copyWithoutAll: behaviors)) ].
-	(falseBasicBlock dominatesInstr: send) ifTrue: [ 
+	(falseBasicBlock dominatesInstruction: send) ifTrue: [ 
 		"only of of the types" 
 		^ typeFound intersection: (SoKnownType forArray: behaviors) ].
 	^ typeFound
@@ -73,5 +73,5 @@ SoBranchIfNotInstanceOf >> maybeSpecifyType: typeFound for: send [
 
 { #category : #testing }
 SoBranchIfNotInstanceOf >> specifyTypeOfExpressionAt: instr [
-	^ (trueBasicBlock dominatesInstr: instr) or: [ falseBasicBlock dominatesInstr: instr ]
+	^ (trueBasicBlock dominatesInstruction: instr) or: [ falseBasicBlock dominatesInstruction: instr ]
 ]

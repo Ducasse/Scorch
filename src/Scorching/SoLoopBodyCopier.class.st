@@ -78,19 +78,19 @@ SoLoopBodyCopier >> fillLastBasicBlock: basicBlock to: targetOrNil [
 	newBB := mapping at: basicBlock.
 	
 	"Init loop, firstInstr is different..."
-	newBB firstInstr: basicBlock firstInstr copy.
-	instr := basicBlock firstInstr.
-	instrCopy := newBB firstInstr.
+	newBB firstInstruction: basicBlock firstInstruction copy.
+	instr := basicBlock firstInstruction.
+	instrCopy := newBB firstInstruction.
 	self patchCopy: instrCopy from: instr.
 	
 	"main loop copy all instructions..."
 	[instr isCFGInstr] whileFalse:	
-		[instr := instr nextInstr.
+		[instr := instr nextInstruction.
 		"last BB of loop is copied differently ..."
 		(instr isCFGInstr and: [ targetOrNil notNil ])
 			ifTrue: [ ^ self replaceBackjumpAfter: instrCopy targetingInstead: targetOrNil  ].
-		instrCopy nextInstr: instr copy.
-		instrCopy := instrCopy nextInstr.
+		instrCopy nextInstruction: instr copy.
+		instrCopy := instrCopy nextInstruction.
 		self patchCopy: instrCopy from: instr ] .
 	
 	newBB lastInstr: instrCopy.
@@ -306,9 +306,9 @@ SoLoopBodyCopier >> remapPhi: instr [
 SoLoopBodyCopier >> replaceBackjumpAfter: instrCopy targetingInstead: target [ 
 	| newBB |
 	newBB := instrCopy basicBlock.
-	instrCopy nextInstr: (SoJumpAhead from: instrCopy basicBlock to: target).
+	instrCopy nextInstruction: (SoJumpAhead from: instrCopy basicBlock to: target).
 	target removePredecessor: newBB.
-	newBB lastInstr: instrCopy nextInstr 
+	newBB lastInstr: instrCopy nextInstruction 
 	
 ]
 
@@ -316,8 +316,8 @@ SoLoopBodyCopier >> replaceBackjumpAfter: instrCopy targetingInstead: target [
 SoLoopBodyCopier >> splitEdgeFrom: predecessor to: bb [
 	| newBB |
 	newBB := SoBasicBlock new.
-	newBB firstInstr: (SoJumpAhead from: newBB to: bb).
-	newBB lastInstr: newBB firstInstr.
+	newBB firstInstruction: (SoJumpAhead from: newBB to: bb).
+	newBB lastInstr: newBB firstInstruction.
 	bb codeNode addBasicBlock: newBB before: bb.
 	newBB dominator: predecessor.
 	predecessor lastInstr replaceSuccessor: bb by: newBB.

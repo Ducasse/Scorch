@@ -36,14 +36,14 @@ SoBuilder >> addCFGInstr: instr [
 
 { #category : #building }
 SoBuilder >> addFakeConstant: cst fakeBasicBlock: bb [
-	returnBasicBlock firstInstr addInput: cst basicBlock: bb.
+	returnBasicBlock firstInstruction addInput: cst basicBlock: bb.
 ]
 
 { #category : #'adding instructions' }
 SoBuilder >> addInstr: instr [
 	currentInstr 
-		ifNotNil: [ currentInstr nextInstr: instr ]
-		ifNil: [ currentBasicBlock firstInstr: instr ].
+		ifNotNil: [ currentInstr nextInstruction: instr ]
+		ifNil: [ currentBasicBlock firstInstruction: instr ].
 	^ currentInstr := instr
 ]
 
@@ -147,7 +147,7 @@ SoBuilder >> fillPhi: firstPhi withValues: predecessors [
 			] whileTrue: [ index := index + 1 ]. "no phis for temp vectors"
 		predecessors do: [ :pred | instr addInput: (pred tempData at: index) basicBlock: pred ].
 		index := index + 1.
-		instr := instr nextInstr ].
+		instr := instr nextInstruction ].
 ]
 
 { #category : #building }
@@ -203,7 +203,7 @@ SoBuilder >> jump: basicBlock [
 
 { #category : #building }
 SoBuilder >> localReturn: instr [
-	returnBasicBlock firstInstr addInput: instr basicBlock: currentBasicBlock.
+	returnBasicBlock firstInstruction addInput: instr basicBlock: currentBasicBlock.
 	self jump: returnBasicBlock.
 ]
 
@@ -266,7 +266,7 @@ SoBuilder >> returnBasicBlock: aValue [
 
 { #category : #accessing }
 SoBuilder >> returnPhi [
-	^ returnBasicBlock firstInstr
+	^ returnBasicBlock firstInstruction
 ]
 
 { #category : #decompilation }
@@ -340,7 +340,7 @@ SoBuilder >> switchToBasicBlock: basicBlock [
 
 { #category : #decompilation }
 SoBuilder >> terminate [
-	returnBasicBlock firstInstr inputs ifEmpty: [ ^ codeNode ].
+	returnBasicBlock firstInstruction inputs ifEmpty: [ ^ codeNode ].
 	codeNode addBasicBlock: returnBasicBlock.
 	SoBasicBlockMerger new mergeIntoPredecessorIfPossible: returnBasicBlock.
 	^ codeNode  

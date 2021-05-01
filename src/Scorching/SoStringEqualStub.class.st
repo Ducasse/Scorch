@@ -102,8 +102,8 @@ SoStringEqualStub >> matchesStringEqualPattern [
 	(prim at: 1) = #MiscPrimitivePlugin ifFalse: [ ^ false ].
 	(prim at: 2) = #primitiveCompareString ifFalse: [ ^ false ].
 	stringCmp uses size = 3 ifFalse: [ ^ false ].
-	trapInstr := stringCmp nextInstr.
-	equal2Instr := trapInstr nextInstr.
+	trapInstr := stringCmp nextInstruction.
+	equal2Instr := trapInstr nextInstruction.
 	(stringCmp uses includes: trapInstr) ifFalse: [ ^ false ].
 	(stringCmp uses includes: equal2Instr) ifFalse: [ ^ false ].
 	(stringCmp uses anySatisfy: [ :use | use isSunkObject and: [use node = trapInstr]]) ifFalse: [ ^ false ].
@@ -152,9 +152,9 @@ SoStringEqualStub >> rewriteStringEqualAnySize [
 	
 	byteEqual insertBefore: stringCmp.
 	
-	trapInstr removeInstr.
+	trapInstr removeInstruction.
 	equal2Instr removeAndReplaceUsesBy: byteEqual.
-	stringCmp removeInstr.
+	stringCmp removeInstruction.
 
 	{ byteEqual "other instr we may add..." } do: [ :i | i isTraversedBy: SoGVN new ]
 ]
@@ -171,9 +171,9 @@ SoStringEqualStub >> rewriteStringEqualExactSize [
 	
 	byteEqual insertBefore: stringCmp.
 	
-	trapInstr removeInstr.
+	trapInstr removeInstruction.
 	equal2Instr removeAndReplaceUsesBy: byteEqual.
-	stringCmp removeInstr.
+	stringCmp removeInstruction.
 
 	{ byteEqual "other instr we may add..." } do: [ :i | i isTraversedBy: SoGVN new ]
 ]
@@ -186,7 +186,7 @@ SoStringEqualStub >> sizeOf: op matchesConstant: int [
 	equals := sizeOps flatCollect: [ :each | each uses select: [ :use | use class = SoSmiEqualOp ] ].
 	equals := equals select: [ :each | each subNodes anySatisfy: [ :sub | sub isConstant and: [ sub constant = int ] ] ].
 	branches := equals flatCollect: [ :each | each uses select: [ :use | use isBooleanBranch ] ].
-	^ branches anySatisfy: [ :each | each trueBasicBlock dominatesInstr: stringCmp]
+	^ branches anySatisfy: [ :each | each trueBasicBlock dominatesInstruction: stringCmp]
 ]
 
 { #category : #testing }
@@ -199,7 +199,7 @@ SoStringEqualStub >> sizeOf: op1 matchesSizeOf: op2 [
 			use class = SoSmiEqualOp and: [ sizeOps2 includes: use firstArg ] ] ].
 	branches := equals flatCollect: [ :each | each uses select: [ :use | use isBooleanBranch ] ].
 	^ branches 
-		detect: [ :each | each trueBasicBlock dominatesInstr: stringCmp]
+		detect: [ :each | each trueBasicBlock dominatesInstruction: stringCmp]
 		ifFound: [ :elem | anySize := elem expression receiver. true ]
 		ifNone: [ false ]
 ]

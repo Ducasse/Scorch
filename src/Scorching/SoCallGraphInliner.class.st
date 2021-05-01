@@ -364,7 +364,7 @@ SoCallGraphInliner >> newBasicBlockJumpingTo: bb dominator: dom [
 		yourself.
 	jmp := SoJumpAhead from: newBB to: bb.
 	newBB
-		firstInstr: jmp;
+		firstInstruction: jmp;
 		lastInstr: jmp.
 	dom codeNode addBasicBlock: newBB before: bb.
 	^ newBB
@@ -455,11 +455,11 @@ SoCallGraphInliner >> picTransform: send [
 	prevBB lastInstr: instBranch.
 	send uses ifNotEmpty: [
 		nextBB addFirstInstruction: (SoPhi new
-			addInput: branch1 firstInstr basicBlock: branch1;
-			addInput: branch2 firstInstr basicBlock: branch2;
+			addInput: branch1 firstInstruction basicBlock: branch1;
+			addInput: branch2 firstInstruction basicBlock: branch2;
 			yourself).
-		send replaceUsesBy: nextBB firstInstr ].
-	^ { branch1 firstInstr . branch2 firstInstr  }
+		send replaceUsesBy: nextBB firstInstruction ].
+	^ { branch1 firstInstruction . branch2 firstInstruction  }
 	
 	
 	

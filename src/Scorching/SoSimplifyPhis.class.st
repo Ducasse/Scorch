@@ -60,7 +60,7 @@ SoSimplifyPhis >> checkRedondantInput: phi [
 SoSimplifyPhis >> checkUnused: phi [
 	"Phi is unused. We remove it and reprocess the inputs."
 	self addToWorkList: phi inputs ifNotPhi: phi.
-	phi removeInstr
+	phi removeInstruction
 ]
 
 { #category : #initialization }

@@ -302,7 +302,7 @@ SoDecompiler >> ensureParametersExist [
 
 { #category : #fixups }
 SoDecompiler >> fillPhis: basicBlock [
-	builder fillPhi: basicBlock firstInstr withValues: basicBlock predecessors
+	builder fillPhi: basicBlock firstInstruction withValues: basicBlock predecessors
 ]
 
 { #category : #accessing }
@@ -798,8 +798,8 @@ SoDecompiler >> splitEdge: bb1 to: bb2 [
 	"Assumes the edge between bb1 and bb2 is critical and split it."
 	| split |
 	bb1 codeNode addBasicBlock: (split := SoBasicBlock new).
-	split firstInstr: (SoJumpAhead from: split to: bb2).
-	split lastInstr: split firstInstr.
+	split firstInstruction: (SoJumpAhead from: split to: bb2).
+	split lastInstr: split firstInstruction.
 	bb1 lastInstr replaceSuccessor: bb2 by: split.
 	bb2 phisDo: [ :phi |
 		phi replaceBasicBlock:  bb1 with: split ].

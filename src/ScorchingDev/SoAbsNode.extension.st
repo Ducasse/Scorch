@@ -42,11 +42,11 @@ SoAbsNode >> shortPrintOn: s [
 	s nextPut: $[.
 	s << self basicBlock printingNumber.
 	s nextPut: $. .
-	instr := self basicBlock firstInstr.
+	instr := self basicBlock firstInstruction.
 	index := 1.
 	[ instr == self or: [ instr isCFGInstr ] ] whileFalse: [ 
 		index := index + 1.
-		instr := instr nextInstr ].
+		instr := instr nextInstruction ].
 	instr == self ifFalse: [ ^ s << '?]' ].
 	index printOn: s.
 	s nextPut: $].

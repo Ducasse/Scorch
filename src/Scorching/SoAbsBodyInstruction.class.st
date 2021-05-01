@@ -57,7 +57,7 @@ SoAbsBodyInstruction >> initialize [
 { #category : #'graph edition' }
 SoAbsBodyInstruction >> insertBefore: instr [
 	instr prevInstrNextInstr: self.
-	self nextInstr: instr
+	self nextInstruction: instr
 ]
 
 { #category : #backend }
@@ -71,13 +71,13 @@ SoAbsBodyInstruction >> isSpilled [
 ]
 
 { #category : #accessing }
-SoAbsBodyInstruction >> nextInstr [
-	<generated>
+SoAbsBodyInstruction >> nextInstruction [
+
 	^ nextInstr
 ]
 
 { #category : #accessing }
-SoAbsBodyInstruction >> nextInstr: aValue [
+SoAbsBodyInstruction >> nextInstruction: aValue [
 	nextInstr := aValue.
 	aValue basicBlock: basicBlock.
 	aValue prevInstr: self
@@ -92,13 +92,13 @@ SoAbsBodyInstruction >> postCopy [
 { #category : #'graph edition' }
 SoAbsBodyInstruction >> removeAndReplaceUsesBy: node [ 	
 	self replaceUsesBy: node.
-	self removeInstr
+	self removeInstruction
 ]
 
 { #category : #'graph edition' }
-SoAbsBodyInstruction >> removeInstr [
+SoAbsBodyInstruction >> removeInstruction [
 	self prevInstrNextInstr: nextInstr.
-	super removeInstr
+	super removeInstruction
 ]
 
 { #category : #accessing }

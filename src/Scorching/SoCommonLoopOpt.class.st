@@ -70,7 +70,7 @@ SoCommonLoopOpt >> newBasicBlockTo: target dominatedBy: basicBlock [
 	basicBlock codeNode addBasicBlock: newBB before: target.
 	^ newBB
 		dominator: basicBlock;
-		firstInstr: jump;
+		firstInstruction: jump;
 		lastInstr: jump;
 		yourself
 ]

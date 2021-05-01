@@ -209,7 +209,7 @@ SoCommonLoop >> matchesAddCst [
 
 { #category : #'pattern matching' }
 SoCommonLoop >> matchesBranch [
-	branch := comp nextInstr.
+	branch := comp nextInstruction.
 	^ branch isBooleanBranch
 ]
 
@@ -248,7 +248,7 @@ SoCommonLoop >> matchesPhisAndComp [
 		
 	phis := backjump targetBasicBlock phis.
 	phis ifEmpty: [ ^ false ].
-	comp := phis last nextInstr.
+	comp := phis last nextInstruction.
 	^ comp isSmiLessOrLessOrEqual
 ]
 

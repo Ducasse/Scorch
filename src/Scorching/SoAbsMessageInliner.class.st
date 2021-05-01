@@ -62,8 +62,8 @@ SoAbsMessageInliner >> createAndSetBasicBlocks [
 
 	nextBasicBlock := send basicBlock.
 	prevBasicBlock := send codeNode addBasicBlock: SoBasicBlock new before: nextBasicBlock.
-	prevBasicBlock firstInstr: (SoJumpAhead from: nextBasicBlock to: inlinedCodeNode entry).
-	prevBasicBlock lastInstr: prevBasicBlock firstInstr
+	prevBasicBlock firstInstruction: (SoJumpAhead from: nextBasicBlock to: inlinedCodeNode entry).
+	prevBasicBlock lastInstr: prevBasicBlock firstInstruction
 ]
 
 { #category : #'private - parsing' }
@@ -221,7 +221,7 @@ SoAbsMessageInliner >> parseNLRInlinedCode [
 	self basicParseInlinedCode ifFalse: [ ^ false ].
 	self removeNLR: inlinedCodeNode.
 	(self stillHasNLR: inlinedCodeNode) ifTrue: [
-		inlinedCodeNode basicBlocks do: [ :bb | bb instructionsDo: [ :instr | instr removeInstr ] ].
+		inlinedCodeNode basicBlocks do: [ :bb | bb instructionsDo: [ :instr | instr removeInstruction ] ].
 		^ false ].
 	self prepareInlinedCode: inlinedCodeNode.
 	futureSendsToInline := self extractSendsFrom: inlinedCodeNode.

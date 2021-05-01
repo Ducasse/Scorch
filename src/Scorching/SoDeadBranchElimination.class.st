@@ -70,7 +70,7 @@ SoDeadBranchElimination >> processBranches: br [
 SoDeadBranchElimination >> removeAllInstr: basicBlock [
 	basicBlock instructionsDo: 
 		[ :instr | 
-			instr removeInstr.
+			instr removeInstruction.
 			instr isBranch ifTrue: [ self removeBranchFromList: instr ] ]
 	
 ]

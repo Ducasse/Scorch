@@ -76,7 +76,7 @@ SoRemoveRedondantRead >> simplifyWrite: access thankTo: elem [
 	 that somehow, but we need reverse dominator and I am not sure it would 
 	 improve that much performance."
 	elem basicBlock = access basicBlock ifFalse: [ ^ self ].
-	elem removeInstr.
+	elem removeInstruction.
 ]
 
 { #category : #traversing }

@@ -20,7 +20,7 @@ SoAbsCFGInstruction >> isCFGInstr [
 
 { #category : #'graph edition' }
 SoAbsCFGInstruction >> replaceBy: cfgInstr [
-	self removeInstr.
+	self removeInstruction.
 	self successors do: [ :succ | succ removePredecessor: basicBlock ].
 	self prevInstrNextInstr: cfgInstr.
 	basicBlock lastInstr: cfgInstr.

@@ -31,7 +31,7 @@ SoBasicBlock >> gtInspectorSchedulingIn: composite [
 
 { #category : #'*ScorchingDev' }
 SoBasicBlock class >> ignoreAccessorNames [
-	^ #(firstInstr)
+	^ #(#firstInstruction)
 ]
 
 { #category : #'*ScorchingDev' }
@@ -39,7 +39,7 @@ SoBasicBlock >> inspectionInstructions [
 	<inspectorPresentationOrder: 4 title: 'Instructions'> 
 
 	^ SpTablePresenter new
-		items: self instructions;	
+		items: ([self instructions] on: Error do: [:ex | 'error']);	
 		yourself
 		
 ]

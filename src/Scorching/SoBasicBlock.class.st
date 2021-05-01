@@ -42,8 +42,8 @@ Class {
 SoBasicBlock >> addFirstInstruction: instr [
 	| prevFirstInstr |
 	prevFirstInstr := firstInstr.
-	self firstInstr: instr.
-	prevFirstInstr ifNotNil: [ :i | instr nextInstr: i ].
+	self firstInstruction: instr.
+	prevFirstInstr ifNotNil: [ :i | instr nextInstruction: i ].
 	^ instr 
 ]
 
@@ -96,7 +96,7 @@ SoBasicBlock >> dominates: basicBlock [
 ]
 
 { #category : #dominator }
-SoBasicBlock >> dominatesInstr: instr [
+SoBasicBlock >> dominatesInstruction: instr [
 	^ firstInstr dominates: instr 
 ]
 
@@ -113,14 +113,14 @@ SoBasicBlock >> dominator: aValue [
 ]
 
 { #category : #accessing }
-SoBasicBlock >> firstInstr [
-	<generated>
+SoBasicBlock >> firstInstruction [
+
 	^ firstInstr
 ]
 
 { #category : #accessing }
-SoBasicBlock >> firstInstr: anObject [
-	firstInstr := anObject 
+SoBasicBlock >> firstInstruction: anInstruction [
+	firstInstr := anInstruction 
 		basicBlock: self;
 		prevInstr: nil;
 		yourself
@@ -138,6 +138,17 @@ SoBasicBlock >> hasBackwardPredecessor [
 	^ predecessors anySatisfy: [ :pred | pred lastInstr isBackjump ] 
 ]
 
+{ #category : #testing }
+SoBasicBlock >> hasInstructions [
+
+	^ firstInstr isNotNil
+]
+
+{ #category : #testing }
+SoBasicBlock >> hasPredecessors [
+	^ predecessors isNotEmpty
+]
+
 { #category : #initialization }
 SoBasicBlock >> initialize [
 
@@ -153,7 +164,7 @@ SoBasicBlock >> instructionsButLastDo: aBlock [
 	instr := firstInstr.
 	[ instr isCFGInstr ] whileFalse: [ 
 		aBlock value: instr.
-		instr := instr nextInstr ]
+		instr := instr nextInstruction ]
 ]
 
 { #category : #enumerating }
@@ -173,7 +184,7 @@ SoBasicBlock >> instructionsDo: aBlock [
 	instr := firstInstr.
 	[ aBlock value: instr.
 	instr isCFGInstr ]
-		whileFalse: [ instr := instr nextInstr ]
+		whileFalse: [ instr := instr nextInstruction ]
 ]
 
 { #category : #enumerating }
@@ -205,7 +216,7 @@ SoBasicBlock >> phis [
 	phis := OrderedCollection new.
 	[ instr notNil and: [ instr isPhi ] ] whileTrue: [ 
 		phis add: instr.
-		instr := instr nextInstr ].
+		instr := instr nextInstruction ].
 	^ phis
 ]
 
@@ -217,7 +228,7 @@ SoBasicBlock >> phisDo: aBlock [
 	instr := firstInstr.
 	[ instr notNil and: [ instr isPhi ] ] whileTrue: [ 
 		aBlock value: instr.
-		instr := instr nextInstr ]
+		instr := instr nextInstruction ]
 ]
 
 { #category : #accessing }

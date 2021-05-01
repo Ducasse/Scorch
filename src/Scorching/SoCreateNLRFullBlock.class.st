@@ -53,7 +53,7 @@ SoCreateNLRFullBlock >> initialize [
 	fakeConstant := SoConstant constant: 'fakeNLRVal'.
 	fakeBasicBlock := SoBasicBlock new.
 	fakeBasicBlock lastInstr: (SoJumpAhead from: fakeBasicBlock to: fakeBasicBlock).
-	fakeBasicBlock firstInstr: fakeBasicBlock lastInstr.
+	fakeBasicBlock firstInstruction: fakeBasicBlock lastInstr.
 ]
 
 { #category : #traversing }

@@ -12,7 +12,7 @@ Class {
 { #category : #public }
 SoBasicBlockSplitter >> splitBasicBlockAt: instr [
 	| prevBB |
-	instr removeInstr.
+	instr removeInstruction.
 	instr codeNode addBasicBlock: (prevBB := SoBasicBlock new) before: instr basicBlock.
 	instr basicBlock predecessors copy do: 
 		[ :each | each lastInstr replaceSuccessor: instr basicBlock by: prevBB ].
@@ -27,11 +27,11 @@ SoBasicBlockSplitter >> splitBasicBlockAt: instr [
 SoBasicBlockSplitter >> splitInstructionsAt: instr prevBB: prevBB [
 	| jumpAhead |
 	jumpAhead := SoJumpAhead from: prevBB to: instr basicBlock.
-	prevBB firstInstr: (instr prevInstr 
-		ifNotNil: [ instr basicBlock firstInstr ]
+	prevBB firstInstruction: (instr prevInstr 
+		ifNotNil: [ instr basicBlock firstInstruction ]
 		ifNil: [ jumpAhead ]).
 	instr prevInstrNextInstr: jumpAhead.
 	prevBB instructionsDo: [ :in | in basicBlock: prevBB ].
-	instr basicBlock firstInstr: instr nextInstr.
+	instr basicBlock firstInstruction: instr nextInstruction.
 	prevBB lastInstr: jumpAhead.
 ]

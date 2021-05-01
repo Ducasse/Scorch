@@ -219,7 +219,7 @@ SoGVN >> removeStoreChecks: new [
 	| instr indexes |
 	instr := new.
 	indexes := Set new.
-	[ instr := instr nextInstr.
+	[ instr := instr nextInstruction.
 	(instr isInstVar and: [ instr isWrite and: [ instr object = new ] ]) ifFalse: [ ^ self maybeRemoveNilInit: new through: indexes ].
 	self removeChecks: instr.
 	indexes add: instr index.
@@ -261,7 +261,7 @@ SoGVN >> statifyOp: op [
 SoGVN >> traverseAccessingOp: op [
 	op arguments size = 2 ifTrue: [ ^ self ].
 	"At"
-	op uses ifEmpty: [ ^ op removeInstr ].
+	op uses ifEmpty: [ ^ op removeInstruction ].
 	op firstArg isSmiConstant ifFalse: [ ^ self ].
 	op receiver isConstant ifTrue: [ ^ self statifyOp: op ].
 	op receiver isCreateArray ifFalse: [ ^ self ].
@@ -355,9 +355,9 @@ SoGVN >> traverseCreateFullBlock: block [
 
 { #category : #traversing }
 SoGVN >> traverseCreateNode: obj sunkObject: sunkObj [
-	obj uses ifEmpty: [ ^ obj removeInstr ].
+	obj uses ifEmpty: [ ^ obj removeInstruction ].
 	(obj uses allSatisfy: [ :use | use isSunkObject ]) ifFalse: [ ^ self ].
-	obj removeInstr.
+	obj removeInstruction.
 	obj uses do: [ :sunkObject |
 		(sunkObject node deoptInfo sunkObjects includes: sunkObj) ifFalse: 
 			[ sunkObject node deoptInfo addSunkObject: sunkObj copy ].
@@ -377,20 +377,20 @@ SoGVN >> traverseEnsureEnoughSpace: instr [
 	backwardInstr hasDeoptInfo ifTrue: [ ^ self ].
 	backwardInstr isEnsureEnoughSpace ifTrue: [ 
 		backwardInstr numWords: backwardInstr numWords + instr numWords.
-		^ instr removeInstr ].
+		^ instr removeInstruction ].
 	true ] whileTrue: [ backwardInstr := backwardInstr prevInstr ]
 ]
 
 { #category : #traversing }
 SoGVN >> traverseHeapAccess: access [
 	access isWrite ifTrue: [ ^ self ].
-	access uses ifEmpty: [ access removeInstr ]
+	access uses ifEmpty: [ access removeInstruction ]
 ]
 
 { #category : #traversing }
 SoGVN >> traverseInstantiationOp: op [
 	self removeStoreChecks: op.
-	op uses size = 0 ifTrue: [ op removeInstr ]
+	op uses size = 0 ifTrue: [ op removeInstruction ]
 ]
 
 { #category : #traversing }
@@ -454,7 +454,7 @@ SoGVN >> traverseTrapIfNotInstanceOf: trap [
 	| type |
 	type := trap expression typeInformationAt: trap.
 	type isKnownType ifTrue: 
-		[ (trap behaviors includesAll: type behaviors) ifTrue: [ ^ trap removeInstr ] ].
+		[ (trap behaviors includesAll: type behaviors) ifTrue: [ ^ trap removeInstruction ] ].
 	commonSubExpressions
 		at: trap expression
 		ifPresent: [ :elem | self commonSubEx: trap againstAll: elem ]
@@ -480,6 +480,6 @@ SoGVN >> tryPrimitive: primitive for: send [
 
 { #category : #private }
 SoGVN >> unsafeOpGVN: op [
-	(op uses size = 0 and: [ op hasEffect not ]) ifTrue: [ ^ op removeInstr ].
+	(op uses size = 0 and: [ op hasEffect not ]) ifTrue: [ ^ op removeInstruction ].
 	self cse: op
 ]

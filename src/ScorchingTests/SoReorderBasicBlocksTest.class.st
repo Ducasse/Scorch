@@ -20,7 +20,7 @@ SoReorderBasicBlocksTest >> testBasicNoReorder [
 	self assert: original basicBlocks size equals: 1.
 	self assert: original basicBlocks first predecessors equals: reorderedMethod basicBlocks first predecessors.
 	self assert: original basicBlocks first predecessors asArray equals: #().
-	self assert: original basicBlocks first firstInstr printString equals: reorderedMethod basicBlocks first firstInstr printString.
+	self assert: original basicBlocks first firstInstruction printString equals: reorderedMethod basicBlocks first firstInstruction printString.
 	self assert: original basicBlocks first lastInstr printString equals: reorderedMethod basicBlocks first lastInstr printString.
 	self assert: original basicBlocks first tempData isNil.
 	self assert: reorderedMethod basicBlocks first tempData isNil.
@@ -123,8 +123,8 @@ Preds: #(2). Dom: None
 "
 	
 	"should think how to test the specific part of the algo."
-	self assert: ((original basicBlocks sixth) firstInstr isKindOf: SoJumpAhead).
-	self assert: ((reorderedMethod basicBlocks fifth) firstInstr isKindOf: SoJumpAhead).
+	self assert: ((original basicBlocks sixth) firstInstruction isKindOf: SoJumpAhead).
+	self assert: ((reorderedMethod basicBlocks fifth) firstInstruction isKindOf: SoJumpAhead).
 	
 	reorderedMethod basicBlocks 	
 			withIndexDo: [ :each :ind | self assert: each postOrder equals: ind ]

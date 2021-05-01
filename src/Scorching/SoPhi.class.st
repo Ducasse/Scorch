@@ -217,8 +217,8 @@ SoPhi >> removeInputForBasicBlock: bb [
 ]
 
 { #category : #removing }
-SoPhi >> removeInstr [
-	super removeInstr.
+SoPhi >> removeInstruction [
+	super removeInstruction.
 	backend := thisContext stackOfSize: 10. 
 ]
 

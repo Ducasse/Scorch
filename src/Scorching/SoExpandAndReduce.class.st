@@ -92,7 +92,7 @@ SoExpandAndReduce >> newTrapBasicBlock: deoptInfo dominator: dom [
 	| trap bb |
 	trap := SoImmediateTrap new deoptInfo: deoptInfo; yourself.
 	bb := SoBasicBlock new 
-		firstInstr: trap;
+		firstInstruction: trap;
 		lastInstr: trap;
 		dominator: dom;
 		yourself.
@@ -103,7 +103,7 @@ SoExpandAndReduce >> newTrapBasicBlock: deoptInfo dominator: dom [
 { #category : #reduce }
 SoExpandAndReduce >> noPhiSplitReturn: ret [ 
 	| maybeReturn |
-	maybeReturn := ret basicBlock firstInstr.
+	maybeReturn := ret basicBlock firstInstruction.
 	maybeReturn isReturn ifFalse: [ ^ self ].
 	maybeReturn basicBlock predecessors size > 1 ifFalse: [ ^ self ].
 	self splitRet: maybeReturn
@@ -151,7 +151,7 @@ SoExpandAndReduce >> split: ret on: phi [
 			returnedValue: input;
 			numLevels: ret numLevels;
 			yourself) ].
-	phi removeInstr.
+	phi removeInstruction.
 	phi codeNode basicBlocks remove: phi basicBlock.
 	phi basicBlockReferences do: [ :each | returns add: each lastInstr ]
 ]
@@ -166,16 +166,16 @@ SoExpandAndReduce >> splitRet: return [
 				   	 returns add: each lastInstr ]
 			ifFalse: [ allFwd := false ] ].
 	allFwd ifFalse: [ ^ self ].
-	return removeInstr.
+	return removeInstruction.
 	return codeNode basicBlocks remove: return basicBlock
 ]
 
 { #category : #reduce }
 SoExpandAndReduce >> splitReturn: ret [ 
 	| maybePhi maybeReturn |
-	maybePhi := ret basicBlock firstInstr.
+	maybePhi := ret basicBlock firstInstruction.
 	maybePhi isPhi ifFalse: [ ^ self noPhiSplitReturn: ret ].
-	maybeReturn := maybePhi nextInstr.
+	maybeReturn := maybePhi nextInstruction.
 	maybeReturn isReturn ifFalse: [ ^ self ].
 	maybeReturn returnedValue == maybePhi ifFalse: [ ^ self ].
 	self split: maybeReturn on: maybePhi

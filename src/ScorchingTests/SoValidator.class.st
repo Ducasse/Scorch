@@ -641,9 +641,9 @@ SoValidator >> validateInstructions: basicBlock [
 				assert: (use subNodes count: [ :s | s == instr]) 
 				equals: (instr uses count: [ :u | u == use]) ].
 		self deny: instr isCFGInstruction.
-		self assert: instr nextInstr prevInstr == instr.
-		instr = basicBlock firstInstr ifFalse:
-			[self assert: instr prevInstr nextInstr == instr].
+		self assert: instr nextInstruction prevInstr == instr.
+		instr = basicBlock firstInstruction ifFalse:
+			[self assert: instr prevInstr nextInstruction == instr].
 		instr isSend ifTrue: [ self assert: instr sendData notNil ].
 		instr isPhi ifTrue: [ self validatePhi: instr predecessors: basicBlock predecessors ] ].
 	self validateLastInstruction: basicBlock lastInstr.
@@ -653,7 +653,7 @@ SoValidator >> validateInstructions: basicBlock [
 SoValidator >> validateLastInstruction: instr [
 	self validateAnyInstruction: instr.
 	instr prevInstr ifNotNil: [ :prev |
-		self assert: prev nextInstr == instr ].
+		self assert: prev nextInstruction == instr ].
 	self assert: instr isCFGInstr.
 	instr basicBlock postOrder ifNil: [ ^self ].
 	instr isBackjump 

@@ -47,7 +47,7 @@ SoBranchSplitter >> canSplitBranch: instr mergePoint: mergePoint [
 	"In this specific case it's too difficult to correctly remap the phi entries.
 	 We could implement that later if it looks critical.
 	The problem happens when the branch to split has a complex merge point (multiple merge basic block). Then, If the phi duplicated have uses after the merge point, we need to remap all the phi inputs correctly, creating new phis at each merge points."
-	^ (mergePoint isComplex and: [ instr basicBlock firstInstr isPhi ]) not
+	^ (mergePoint isComplex and: [ instr basicBlock firstInstruction isPhi ]) not
 	
 ]
 
@@ -146,7 +146,7 @@ SoBranchSplitter >> newBasicBlockTo: target dominatedBy: basicBlock justAfter: b
 		ifFalse: [ basicBlock codeNode addBasicBlock: newBB before: target].
 	^ newBB
 		dominator: basicBlock;
-		firstInstr: jump;
+		firstInstruction: jump;
 		lastInstr: jump;
 		yourself
 ]
@@ -209,7 +209,7 @@ SoBranchSplitter >> remapUse: use ofPhi: phi usingMap: map [
 { #category : #'private - split' }
 SoBranchSplitter >> removeBasicBlock: bb [
 
-	bb instructionsDo: [ :instr | instr removeInstr ].
+	bb instructionsDo: [ :instr | instr removeInstruction ].
 	bb lastInstr successors do: [ :succ | succ removePredecessor: bb ].
 	bb codeNode basicBlocks remove: bb.
 ]

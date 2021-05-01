@@ -51,7 +51,7 @@ SoLICM >> hoist: instr in: head [
 	instr hasDeoptInfo ifTrue: [ 
 		loopHead := self fetchLoopHead: head.
 		instr replaceDeoptInfoBy: (loopHead deoptInfo convertToTrapWith: loopHead) ].
-	instr prevInstrNextInstr: instr nextInstr.
+	instr prevInstrNextInstr: instr nextInstruction.
 	instr insertBefore: head lastInstr prevInstr.
 ]
 
@@ -120,7 +120,7 @@ SoLICM >> phi: phi inputsToCheckAgainst: behaviors [
 
 { #category : #private }
 SoLICM >> removeLoopHeads [
-	loopHeads do: [ :each | each removeInstr ].
+	loopHeads do: [ :each | each removeInstruction ].
 ]
 
 { #category : #public }
@@ -134,9 +134,9 @@ SoLICM >> safeForwardTraversing: bb [
 	| instr nextInstr |
 	"We move instructions while iterating so 
 	 we need to compute nextInstr first."
-	instr := bb firstInstr.
+	instr := bb firstInstruction.
 	instr isCFGInstr ifTrue: [ ^ self traverseInstruction: instr ].
-	[ nextInstr := instr nextInstr.
+	[ nextInstr := instr nextInstruction.
 	  self traverseInstruction: instr.
 	  nextInstr isCFGInstr ]
 		whileFalse: [ instr := nextInstr ].

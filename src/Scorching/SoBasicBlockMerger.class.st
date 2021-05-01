@@ -43,7 +43,7 @@ SoBasicBlockMerger >> merge: basicBlock intoPredecessor: uniquePredecessor [
 
 { #category : #private }
 SoBasicBlockMerger >> mergeInstructions: basicBlock into: uniquePredecessor [
-	uniquePredecessor lastInstr prevInstrNextInstr: basicBlock firstInstr.
+	uniquePredecessor lastInstr prevInstrNextInstr: basicBlock firstInstruction.
 	uniquePredecessor lastInstr: basicBlock lastInstr.
 	basicBlock instructionsDo: [ :instr | instr basicBlock: uniquePredecessor ]
 ]
@@ -53,7 +53,7 @@ SoBasicBlockMerger >> mergeIntoPredecessorIfPossible: basicBlock [
 	| uniquePredecessor |
 	basicBlock predecessors size = 1 ifFalse: [ ^ self ].
 	"following line filters NLR fake entries"
-	(basicBlock firstInstr isPhi and: [ basicBlock firstInstr inputs size > 1 ]) ifTrue: [ ^ self ].
+	(basicBlock firstInstruction isPhi and: [ basicBlock firstInstruction inputs size > 1 ]) ifTrue: [ ^ self ].
 	uniquePredecessor := basicBlock predecessors anyOne.
 	uniquePredecessor successors size = 1 ifFalse: [ ^ self ].
 	uniquePredecessor lastInstr isJumpAhead ifFalse: [ ^ self ].

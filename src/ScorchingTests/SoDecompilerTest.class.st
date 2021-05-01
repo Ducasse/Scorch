@@ -124,7 +124,7 @@ Preds: #(2). Dom: None
 SoDecompilerTest >> testGotoInstructionKnowsItsTargetBlock [
 	| soMethod |
 	soMethod := SoMethodDecompiler decompile: (SoExamples >> #exampleArrayAsArg).
-	self assert: soMethod basicBlocks fourth firstInstr targetBasicBlock equals: soMethod basicBlocks third
+	self assert: soMethod basicBlocks fourth firstInstruction targetBasicBlock equals: soMethod basicBlocks third
 ]
 
 { #category : #'tests - instructions' }

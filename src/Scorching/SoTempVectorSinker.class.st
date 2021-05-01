@@ -28,7 +28,7 @@ Class {
 { #category : #sinking }
 SoTempVectorSinker >> addPhisFor: bb [
 	| firstInstr |
-	firstInstr := bb firstInstr.
+	firstInstr := bb firstInstruction.
 	1 to: currentVectorValues size do: [ :i |
 		phis add: (currentVectorValues at: i put: (SoPhi new insertBefore: firstInstr)) ].
 	bb hasBackwardPredecessor ifTrue: [ ^ self ].
@@ -91,11 +91,11 @@ SoTempVectorSinker >> detectTempVectorsToSink: codeNode [
 { #category : #sinking }
 SoTempVectorSinker >> fillPhis: bb [
 	| instr |
-	instr := bb firstInstr.
+	instr := bb firstInstruction.
 	1 to: currentVectorValues size do: [ :i |
 		bb predecessors do: [ :pred |
 			instr addInput: (pred tempData at: i) basicBlock: pred ].
-		instr := instr nextInstr ]
+		instr := instr nextInstruction ]
 ]
 
 { #category : #sinking }
@@ -165,7 +165,7 @@ SoTempVectorSinker >> sinkTempVector: tempVect [
 	self initializeTempVectorValues.
 	self basicSinkTempVector.
 	SoSimplifyPhis new simplifyPhis: phis.
-	tempVectorBeingSunk removeInstr.
+	tempVectorBeingSunk removeInstruction.
 ]
 
 { #category : #accessing }
@@ -228,6 +228,6 @@ SoTempVectorSinker >> traverseRemoteTemp: remote [
 	remote isWrite 
 		ifFalse: [ remote removeAndReplaceUsesBy: (currentVectorValues at: remote remoteIndex + 1) ]
 		ifTrue: [ currentVectorValues at: remote remoteIndex + 1 put: remote expression.
-				 remote removeInstr ]
+				 remote removeInstruction ]
 		
 ]

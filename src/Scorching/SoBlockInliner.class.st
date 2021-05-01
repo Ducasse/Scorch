@@ -23,7 +23,7 @@ SoBlockInliner >> canInline [
 	
 	"Hackish for now -  should remove the trap on FullBlockClosure"	
 	send receiver uses copy do: [ :each |
-		each isTrapIfNotInstanceOf ifTrue: [ each removeInstr ] ].
+		each isTrapIfNotInstanceOf ifTrue: [ each removeInstruction ] ].
 	
 	found := send receiver uses reject: [ :use | use isSunkObject ].
 	found size = 1 ifTrue: [ ^ true ].
@@ -113,7 +113,7 @@ SoBlockInliner >> patchReceiver [
 		sunkObj node deoptInfo sunkObjects 
 			detect: [ :so | so marker == self sunkClosure marker ] 
 			ifNone: [ sunkObj node deoptInfo addSunkObject: self sunkClosure copy ] ].
-	send receiver removeInstr.
+	send receiver removeInstruction.
 ]
 
 { #category : #accessing }

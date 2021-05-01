@@ -38,7 +38,7 @@ SoAbsInstruction >> dominates: anotherInstruction [
 
 { #category : #dominator }
 SoAbsInstruction >> isDominatedByBasicBlock: bb [
-	^ bb dominatesInstr: self
+	^ bb dominatesInstruction: self
 ]
 
 { #category : #'graph edition' }
@@ -62,12 +62,12 @@ SoAbsInstruction >> prevInstr: aValue [
 { #category : #'graph edition' }
 SoAbsInstruction >> prevInstrNextInstr: instr [ 
 	prevInstr
-		ifNil: [ basicBlock firstInstr: instr ]
-		ifNotNil: [ :prev | prev nextInstr: instr ]
+		ifNil: [ basicBlock firstInstruction: instr ]
+		ifNotNil: [ :prev | prev nextInstruction: instr ]
 ]
 
 { #category : #'graph edition' }
-SoAbsInstruction >> removeInstr [
+SoAbsInstruction >> removeInstruction [
 	self subNodesRemoveUses.
 	self removeDeoptInfo 
 ]

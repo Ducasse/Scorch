@@ -39,7 +39,7 @@ SoAbsBodyInstruction >> gtInspectorUsesNoDeoptIn: composite [
 
 { #category : #'*ScorchingDev' }
 SoAbsBodyInstruction class >> ignoreAccessorNames [
-	^ #(nextInstr)
+	^ #(#nextInstruction)
 ]
 
 { #category : #'*ScorchingDev' }

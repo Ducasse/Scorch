@@ -52,7 +52,7 @@ SoAbsSunkObjectState >> deoptNode: aValue [
 
 { #category : #dominator }
 SoAbsSunkObjectState >> isDominatedByBasicBlock: bb [
-	^ bb dominatesInstr: node
+	^ bb dominatesInstruction: node
 ]
 
 { #category : #testing }

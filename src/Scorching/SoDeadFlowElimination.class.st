@@ -89,14 +89,14 @@ SoDeadFlowElimination >> processBackwardMerges [
 SoDeadFlowElimination >> processForwardMerge: merge [
 	"Dead diamond detection."
 	"Not dead if a phi"
-	merge firstInstr isPhi ifTrue: [ ^ self ].
+	merge firstInstruction isPhi ifTrue: [ ^ self ].
 	"Diamond detection"
 	merge predecessors size = 2 ifFalse: [ ^ self ].
 	(merge predecessors includesAll: merge dominator successors) ifFalse: [ ^ self ].
 	"Because critical edges are split and we're in postOrder, predecessors are necessarily
 	 in-between and end with forward unconditional jump to the merge point.
 	 Hence if they've got only the last instruction it's a dead diamond."
-	(merge predecessors allSatisfy: [ :pred | pred firstInstr == pred lastInstr ]) ifFalse: [ ^ self ].
+	(merge predecessors allSatisfy: [ :pred | pred firstInstruction == pred lastInstr ]) ifFalse: [ ^ self ].
 	self removeDeadDiamond: merge.
 ]
 
@@ -116,7 +116,7 @@ SoDeadFlowElimination >> removeDeadDiamond: merge [
 { #category : #'private - backward' }
 SoDeadFlowElimination >> removeDeadLoop: merge [
 	| remainingBranch |
-	merge backwardPredecessor instructionsDo: [ :i | i removeInstr ].
+	merge backwardPredecessor instructionsDo: [ :i | i removeInstruction ].
 	remainingBranch := (merge backwardPredecessor = merge lastInstr trueBasicBlock
 		ifTrue: [ merge lastInstr falseBasicBlock ]
 		ifFalse: [ merge lastInstr trueBasicBlock ]).
