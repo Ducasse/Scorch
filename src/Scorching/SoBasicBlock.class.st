@@ -159,7 +159,7 @@ SoBasicBlock >> initialize [
 
 { #category : #enumerating }
 SoBasicBlock >> instructionsButLastDo: aBlock [
-	"Iterates over the basicBlock instructions from the first instruction to the last but one instruction"
+	"Iterates over the basicBlock instructions from the first instruction to the last but one instruction. Note that the last instruction of a basicBlock should be a control flow instruction. "
 	| instr |
 	instr := firstInstr.
 	[ instr isCFGInstr ] whileFalse: [ 

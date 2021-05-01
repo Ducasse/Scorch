@@ -104,13 +104,13 @@ SoAbsNode >> isBranchIfNotInstanceOf [
 
 { #category : #testing }
 SoAbsNode >> isCFGInstr [
-	<generated>
+
 	^ false
 ]
 
 { #category : #testing }
 SoAbsNode >> isCFGInstruction [
-	<generated>
+	
 	^ false
 ]
 

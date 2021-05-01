@@ -120,10 +120,10 @@ SoAbsMessageInliner >> getExit [
 ]
 
 { #category : #private }
-SoAbsMessageInliner >> hasNLR: code [
+SoAbsMessageInliner >> hasNonLocalReturn: code [
 	code literals do: [ :each |
 		(each class == CompiledBlock)
-			ifTrue: [ (SoBlockNLRScanner scan: each) ifTrue: [ ^ true ] ] ].
+			ifTrue: [ (SoBlockNonLocalReturnScanner scan: each) ifTrue: [ ^ true ] ] ].
 	^ false
 ]
 
@@ -208,7 +208,7 @@ SoAbsMessageInliner >> onlyNLR: aValue [
 
 { #category : #'private - parsing' }
 SoAbsMessageInliner >> parseInlinedCode [
-	(self hasNLR: self codeToInline) ifTrue: [ 
+	(self hasNonLocalReturn: self codeToInline) ifTrue: [ 
 		^ self parseNLRInlinedCode ].
 	self basicParseInlinedCode ifFalse: [ ^ false ].
 	self prepareInlinedCode: inlinedCodeNode.
@@ -302,6 +302,6 @@ SoAbsMessageInliner >> splitBasicBlock [
 SoAbsMessageInliner >> stillHasNLR: codeNode [
 	codeNode basicBlocks do: [ :bb |
 		bb instructionsDo: [ :instr | 
-			(instr isBlockClosure and: [ instr hasNLR ]) ifTrue: [ ^ true ] ] ].
+			(instr isBlockClosure and: [ instr hasNonLocalReturn ]) ifTrue: [ ^ true ] ] ].
 	^ false 
 ]

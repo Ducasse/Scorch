@@ -1,11 +1,11 @@
 Class {
-	#name : #SoBlockNLRScannerTest,
+	#name : #SoBlockNonLocalReturnScannerTest,
 	#superclass : #TestCase,
 	#category : #'ScorchingTests-UnitTests'
 }
 
 { #category : #tests }
-SoBlockNLRScannerTest >> testExampleBlock5 [
+SoBlockNonLocalReturnScannerTest >> testExampleBlock5 [
 	"exampleBlock5
 	| t |
 	t := [ 1 + 2. self ].
@@ -16,13 +16,13 @@ SoBlockNLRScannerTest >> testExampleBlock5 [
 	| res |
 	(SoExamples >> #exampleBlock5) literals do: [ :each |
 		(each class == CompiledBlock)
-			ifTrue: [ res := (SoBlockNLRScanner on: each) scan. ]].
+			ifTrue: [ res := (SoBlockNonLocalReturnScanner on: each) scan. ]].
 	self deny: res
 	
 ]
 
 { #category : #tests }
-SoBlockNLRScannerTest >> testExampleNonLocalReturn [
+SoBlockNonLocalReturnScannerTest >> testExampleNonLocalReturn [
 	"exampleNonLocalReturn
 	| temp |
 	temp := 1.
@@ -31,16 +31,16 @@ SoBlockNLRScannerTest >> testExampleNonLocalReturn [
 	| res |
 	(SoExamples >> #exampleNonLocalReturn) literals do: [ :each |
 		(each class == CompiledBlock)
-			ifTrue: [ res := (SoBlockNLRScanner on: each) scan. ]].
+			ifTrue: [ res := (SoBlockNonLocalReturnScanner on: each) scan. ]].
 	self assert: res
 	
 ]
 
 { #category : #tests }
-SoBlockNLRScannerTest >> testExampleSpillPhi [ 
+SoBlockNonLocalReturnScannerTest >> testExampleSpillPhi [ 
 	"By default a block scanner is initialized to return false."
 	| scanner |
-	scanner := SoBlockNLRScanner on: (SoExamples >> #exampleSpillPhi).
-	self deny: scanner hasNLR
+	scanner := SoBlockNonLocalReturnScanner on: (SoExamples >> #exampleSpillPhi).
+	self deny: scanner hasNonLocalReturn
 
 ]

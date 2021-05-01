@@ -41,7 +41,7 @@ SoCreateNLRFullBlock >> fakeConstant: aValue [
 ]
 
 { #category : #testing }
-SoCreateNLRFullBlock >> hasNLR [
+SoCreateNLRFullBlock >> hasNonLocalReturn [
 	^ true
 ]
 

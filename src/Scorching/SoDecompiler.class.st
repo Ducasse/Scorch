@@ -211,7 +211,7 @@ SoDecompiler >> classToInstall: classToInstall [
 SoDecompiler >> closureClass: compiledBlock ignoreOuterContext: ignoreOuterContext [
 	ignoreOuterContext ifTrue: [ ^ SoCreateFullBlock ].
 	callerDeoptInfo ifNil: [ ^SoCreateContextFullBlock ].
-	^ (SoBlockNLRScanner scan: compiledBlock)
+	^ (SoBlockNonLocalReturnScanner scan: compiledBlock)
 		ifTrue: [ SoCreateNLRFullBlock ]
 		ifFalse: [ SoCreateContextFullBlock ] 
 ]
@@ -528,7 +528,7 @@ SoDecompiler >> pushFullClosure: compiledBlock numCopied: numCopied receiverOnSt
 		ifFalse: [ rcvr := receiver ].
 	self push: (blockInstr := builder fullBlock: compiledBlock receiver: rcvr copiedValues: copiedValues class: closureClass).
 	blockInstr outerContextMarker: self scopeMarker.
-	blockInstr hasNLR ifFalse: [ ^ self ]. 
+	blockInstr hasNonLocalReturn ifFalse: [ ^ self ]. 
 	builder addFakeConstant: blockInstr fakeConstant fakeBasicBlock: blockInstr fakeBasicBlock.
 	blockInstr nlrPhi: builder returnPhi.
 		

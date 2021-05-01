@@ -60,7 +60,7 @@ SoCreateFullBlock >> compiledCode: aValue [
 ]
 
 { #category : #testing }
-SoCreateFullBlock >> hasNLR [
+SoCreateFullBlock >> hasNonLocalReturn [
 	^ false
 ]
 
