@@ -31,7 +31,7 @@ SoBuilder class >> on: codeNodeClass [
 { #category : #'adding instructions' }
 SoBuilder >> addCFGInstr: instr [
 	currentBasicBlock lastInstr: instr.
-	^ self addInstr: instr
+	^ self addInstruction: instr
 ]
 
 { #category : #building }
@@ -40,7 +40,9 @@ SoBuilder >> addFakeConstant: cst fakeBasicBlock: bb [
 ]
 
 { #category : #'adding instructions' }
-SoBuilder >> addInstr: instr [
+SoBuilder >> addInstruction: instr [
+	"Insert the instruction after existing ones, or as first instruction of the current block."
+	
 	currentInstr 
 		ifNotNil: [ currentInstr nextInstruction: instr ]
 		ifNil: [ currentBasicBlock firstInstruction: instr ].
@@ -49,6 +51,8 @@ SoBuilder >> addInstr: instr [
 
 { #category : #'building-immediate' }
 SoBuilder >> arg: index [
+	"Return an SoArg instance of given index."
+	
 	^ SoArg new 
 		index: index;
 		yourself
@@ -56,7 +60,7 @@ SoBuilder >> arg: index [
 
 { #category : #building }
 SoBuilder >> array: values [
-	^ self addInstr: (SoCreateArray new values: values; yourself)
+	^ self addInstruction: (SoCreateArray new values: values; yourself)
 ]
 
 { #category : #building }
@@ -68,6 +72,7 @@ SoBuilder >> backjump: basicBlock [
 
 { #category : #accessing }
 SoBuilder >> branch: expression [
+
 	^ self addCFGInstr: (SoBooleanBranch new 
 		expression: expression;
 		yourself)
@@ -81,7 +86,7 @@ SoBuilder >> codeNode [
 
 { #category : #accessing }
 SoBuilder >> codeNode: aValue [
-	<generated>
+	
 	codeNode := aValue
 ]
 
@@ -100,7 +105,7 @@ SoBuilder >> context [
 
 { #category : #building }
 SoBuilder >> contextInstVar: index of: object [
-	^ self addInstr: (SoContextInstVar new
+	^ self addInstruction: (SoContextInstVar new
 		index: index;
 		object: object;
 		yourself)
@@ -108,14 +113,14 @@ SoBuilder >> contextInstVar: index of: object [
 
 { #category : #building }
 SoBuilder >> createTempVector: size [
-	^ self addInstr: (SoCreateTempVect new
+	^ self addInstruction: (SoCreateTempVect new
 		vectorSize: size;
 		yourself)
 ]
 
 { #category : #accessing }
 SoBuilder >> currentBasicBlock [
-	<generated>
+
 	^ currentBasicBlock
 ]
 
@@ -126,15 +131,15 @@ SoBuilder >> currentBasicBlock: aValue [
 ]
 
 { #category : #accessing }
-SoBuilder >> currentInstr [
-	<generated>
+SoBuilder >> currentInstruction [
+
 	^ currentInstr
 ]
 
 { #category : #accessing }
-SoBuilder >> currentInstr: aValue [
-	<generated>
-	currentInstr := aValue
+SoBuilder >> currentInstruction: anInstruction [
+
+	currentInstr := anInstruction
 ]
 
 { #category : #decompilation }
@@ -152,7 +157,7 @@ SoBuilder >> fillPhi: firstPhi withValues: predecessors [
 
 { #category : #building }
 SoBuilder >> fullBlock: compiledBlock receiver: rcvr copiedValues: copiedValues class: closureClass [
-	^ self addInstr: (closureClass new
+	^ self addInstruction: (closureClass new
 		values: copiedValues;
 		receiver: rcvr;
 		compiledCode: compiledBlock;
@@ -162,14 +167,14 @@ SoBuilder >> fullBlock: compiledBlock receiver: rcvr copiedValues: copiedValues 
 
 { #category : #building }
 SoBuilder >> global: assoc [
-	^ self addInstr: (SoGlobal new
+	^ self addInstruction: (SoGlobal new
 		assoc: assoc;
 		yourself)
 ]
 
 { #category : #building }
 SoBuilder >> indirectTemp: remoteTempIndex vector: varHolder [
-	^ self addInstr: (SoRemoteTemp new
+	^ self addInstruction: (SoRemoteTemp new
 		remoteIndex: remoteTempIndex;
 		tempVector: varHolder;
 		yourself)
@@ -190,7 +195,7 @@ SoBuilder >> initialize [
 
 { #category : #building }
 SoBuilder >> instVar: index of: object [
-	^ self addInstr: (SoInstVar new
+	^ self addInstruction: (SoInstVar new
 		index: index;
 		object: object;
 		yourself)
@@ -209,12 +214,12 @@ SoBuilder >> localReturn: instr [
 
 { #category : #building }
 SoBuilder >> loopHead [
-	^ self addInstr: SoLoopHead new
+	^ self addInstruction: SoLoopHead new
 ]
 
 { #category : #building }
 SoBuilder >> mutableLiteral: lit [
-	^ self addInstr: (SoMutableLiteral new
+	^ self addInstruction: (SoMutableLiteral new
 		literal: lit;
 		yourself)
 ]
@@ -229,18 +234,20 @@ SoBuilder >> nonLocalReturn: value [
 
 { #category : #building }
 SoBuilder >> phi [
-	^ self addInstr: SoPhi new
+	^ self addInstruction: SoPhi new
 ]
 
 { #category : #building }
 SoBuilder >> pointerEquals: rcvr with: arg [
-	^ self addInstr: (SoPointerEqualsOp 
+	^ self addInstruction: (SoPointerEqualsOp 
 		withReceiver: rcvr
 		arguments: {arg})
 ]
 
 { #category : #'building-immediate' }
 SoBuilder >> receiver [
+	"Return an SoReceiver instance."
+	
 	^ SoReceiver new
 ]
 
@@ -266,6 +273,7 @@ SoBuilder >> returnBasicBlock: aValue [
 
 { #category : #accessing }
 SoBuilder >> returnPhi [
+
 	^ returnBasicBlock firstInstruction
 ]
 
@@ -276,7 +284,7 @@ SoBuilder >> saveLiveVariables: array [
 
 { #category : #building }
 SoBuilder >> send: selector receiver: rcvr args: args [
-	^ self addInstr: (SoSend new 	
+	^ self addInstruction: (SoSend new 	
 		receiver: rcvr;
 		arguments: args;
 		selector: selector;
@@ -285,7 +293,7 @@ SoBuilder >> send: selector receiver: rcvr args: args [
 
 { #category : #building }
 SoBuilder >> store: val contextInstVar: index of: object [
-	^ self addInstr: (SoContextInstVar new
+	^ self addInstruction: (SoContextInstVar new
 		index: index;
 		object: object;
 		beWrite;
@@ -295,7 +303,7 @@ SoBuilder >> store: val contextInstVar: index of: object [
 
 { #category : #building }
 SoBuilder >> store: val global: assoc [
-	^ self addInstr: (SoGlobal new 
+	^ self addInstruction: (SoGlobal new 
 		assoc: assoc;
 		beWrite;
 		expression: val;
@@ -304,7 +312,7 @@ SoBuilder >> store: val global: assoc [
 
 { #category : #building }
 SoBuilder >> store: val indirectTemp: remoteTempIndex vector: varHolder [
-	^ self addInstr: (SoRemoteTemp new
+	^ self addInstruction: (SoRemoteTemp new
 		remoteIndex: remoteTempIndex;
 		tempVector: varHolder;
 		beWrite;
@@ -314,7 +322,7 @@ SoBuilder >> store: val indirectTemp: remoteTempIndex vector: varHolder [
 
 { #category : #building }
 SoBuilder >> store: val instVar: index of: object [
-	^ self addInstr: (SoInstVar new
+	^ self addInstruction: (SoInstVar new
 		index: index;
 		object: object;
 		beWrite;

@@ -3,7 +3,7 @@ represents an array at bytecode level (curly brace array).
 
 ex: {  1 . 2 }
 
-	values <Array of ScNodes> 
+	values <Array of SoNodes> 
 "
 Class {
 	#name : #SoCreateArray,
