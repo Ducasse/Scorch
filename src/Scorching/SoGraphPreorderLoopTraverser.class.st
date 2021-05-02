@@ -14,13 +14,13 @@ Class {
 
 { #category : #accessing }
 SoGraphPreorderLoopTraverser >> backjumpBasicBlocks [
-	<generated>
+
 	^ backjumpBasicBlocks
 ]
 
 { #category : #accessing }
 SoGraphPreorderLoopTraverser >> backjumpBasicBlocks: aValue [
-	<generated>
+	
 	backjumpBasicBlocks := aValue
 ]
 
@@ -28,12 +28,12 @@ SoGraphPreorderLoopTraverser >> backjumpBasicBlocks: aValue [
 SoGraphPreorderLoopTraverser >> initialize [
 
 	super initialize.
-
 	backjumpBasicBlocks := Set new.
 ]
 
 { #category : #'recursive traversing' }
 SoGraphPreorderLoopTraverser >> maybeReprocess: basicBlock [
+
 	(backjumpBasicBlocks includes: basicBlock) ifTrue: [ ^ self ].
 	backjumpBasicBlocks add: basicBlock.
 	self traverseBasicBlocks: (basicBlock codeNode basicBlocks 
@@ -43,6 +43,7 @@ SoGraphPreorderLoopTraverser >> maybeReprocess: basicBlock [
 
 { #category : #'recursive traversing' }
 SoGraphPreorderLoopTraverser >> traverseBasicBlocks: basicBlocks [
+
 	basicBlocks do: [ :basicBlock |
 		self traverseForwardBasicBlock: basicBlock.
 		basicBlock lastInstr isBackjump ifTrue: [ 
@@ -51,5 +52,6 @@ SoGraphPreorderLoopTraverser >> traverseBasicBlocks: basicBlocks [
 
 { #category : #'recursive traversing' }
 SoGraphPreorderLoopTraverser >> traversePreorderCode: code [
+
 	self traverseBasicBlocks: code basicBlocks
 ]

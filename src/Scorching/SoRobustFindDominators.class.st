@@ -1,3 +1,6 @@
+"
+This is a little experiment made to see if we really understand the algorithm and to see if we can build one that does not depend on the order of block pass.
+"
 Class {
 	#name : #SoRobustFindDominators,
 	#superclass : #SoSimpleFindDominators,

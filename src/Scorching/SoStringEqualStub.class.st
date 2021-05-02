@@ -156,7 +156,7 @@ SoStringEqualStub >> rewriteStringEqualAnySize [
 	equal2Instr removeAndReplaceUsesBy: byteEqual.
 	stringCmp removeInstruction.
 
-	{ byteEqual "other instr we may add..." } do: [ :i | i isTraversedBy: SoGVN new ]
+	{ byteEqual "other instr we may add..." } do: [ :i | i isTraversedBy: SoGlobalVariableNumbering new ]
 ]
 
 { #category : #rewrite }
@@ -175,7 +175,7 @@ SoStringEqualStub >> rewriteStringEqualExactSize [
 	equal2Instr removeAndReplaceUsesBy: byteEqual.
 	stringCmp removeInstruction.
 
-	{ byteEqual "other instr we may add..." } do: [ :i | i isTraversedBy: SoGVN new ]
+	{ byteEqual "other instr we may add..." } do: [ :i | i isTraversedBy: SoGlobalVariableNumbering new ]
 ]
 
 { #category : #testing }

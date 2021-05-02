@@ -22,6 +22,7 @@ Class {
 { #category : #private }
 SoSimplifyPhis >> addToWorkList: collection ifNotPhi: phi [
 	"We check for the phi itself to avoid infinite loops in phi for loops"
+	
 	collection do: [ :elem |
 		(elem isPhiInput and: [ elem phi ~~ phi ]) ifTrue: [
 			workList add: elem phi ] ].
@@ -59,6 +60,7 @@ SoSimplifyPhis >> checkRedondantInput: phi [
 { #category : #private }
 SoSimplifyPhis >> checkUnused: phi [
 	"Phi is unused. We remove it and reprocess the inputs."
+	
 	self addToWorkList: phi inputs ifNotPhi: phi.
 	phi removeInstruction
 ]
@@ -87,9 +89,9 @@ SoSimplifyPhis >> simplifyPhis [
 ]
 
 { #category : #public }
-SoSimplifyPhis >> simplifyPhis: phis [
+SoSimplifyPhis >> simplifyPhis: collectionOfphis [
 
-	workList := phis.
+	workList := collectionOfphis.
 	self simplifyPhis
 ]
 

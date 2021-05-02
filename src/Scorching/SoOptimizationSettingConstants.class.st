@@ -40,10 +40,10 @@ SoOptimizationSettingConstants class >> initialize [
 	optimisation planning by finding fixed points for each optimisations given the constraints."
 	
 	InitialInliningPhase := { SoCallGraphInliner . SoDeadBranchElimination .  SoTempVectorSinker }.
-	InitialOptPhase := { SoABCD . SoBranchSplitter . SoGVN . SoRemoveRedondantRead . SoGVN . SoRemoveRedondantRead . SoABCD }.
-	UniqueLoopPhase := { SoLICM ". SoCommonLoopOpt ". SoGVN }.
+	InitialOptPhase := { SoABCD . SoBranchSplitter . SoGlobalVariableNumbering . SoRemoveRedondantRead . SoGlobalVariableNumbering . SoRemoveRedondantRead . SoABCD }.
+	UniqueLoopPhase := { SoLICM ". SoCommonLoopOpt ". SoGlobalVariableNumbering }.
 	LateInliningPhase := { SoLateCallGraphInliner . SoDeadBranchElimination . SoTempVectorSinker }.
-	LateOptPhase := { SoBranchSplitter . SoGVN . SoRemoveRedondantRead . SoABCD . SoBranchSplitter . SoGVN . SoRemoveRedondantRead . SoDeadFlowElimination . SoGVN }.
+	LateOptPhase := { SoBranchSplitter . SoGlobalVariableNumbering . SoRemoveRedondantRead . SoABCD . SoBranchSplitter . SoGlobalVariableNumbering . SoRemoveRedondantRead . SoDeadFlowElimination . SoGlobalVariableNumbering }.
 	
 	NoInitialInliningPhase := InitialOptPhase , UniqueLoopPhase ,  LateInliningPhase , LateOptPhase.
 	NoInitialOptPhase := InitialInliningPhase , UniqueLoopPhase ,  LateInliningPhase , LateOptPhase.

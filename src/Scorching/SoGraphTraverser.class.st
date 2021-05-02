@@ -1,5 +1,5 @@
 "
-I am an abstract superclass of all objects that needs to be able to traverse the CFG graph.
+I am the superclass of all objects that needs to be able to traverse the CFG graph.
  
 By default, traversing an instruction forwards the traverse logic to the instruction's superclass traverse method. For example, InstVar inherits from HeapAccess which inherits from body instruction, so the default behavior of traversing InstVar forwards to traverse HeapAccess which forwards to traverse Body instruction. This way, if a pass overrides only traverseHeapAccess:, it catches all the subclasses of Heap access traversing.
 
@@ -18,6 +18,7 @@ SoGraphTraverser >> branchesToReprocess [
 
 { #category : #utils }
 SoGraphTraverser >> dominatedPath: basicBlock [
+
 	| result workList bb |
 	result := OrderedCollection with: basicBlock.
 	workList := basicBlock successors asOrderedCollection.
@@ -39,6 +40,7 @@ SoGraphTraverser >> replaceCompOp: op withBool: bool [
 
 { #category : #utils }
 SoGraphTraverser >> reprocessBranches [
+
 	SoDeadBranchElimination new processBranches: self branchesToReprocess
 ]
 

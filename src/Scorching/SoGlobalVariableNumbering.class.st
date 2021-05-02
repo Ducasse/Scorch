@@ -17,7 +17,7 @@ phiSimplifier <SimplifyPhi> this is here to be instantiated just once.
 branchesToReprocess <Colleciton of branches> to give to dead branch eliminination
 "
 Class {
-	#name : #SoGVN,
+	#name : #SoGlobalVariableNumbering,
 	#superclass : #SoGraphPreorderLoopTraverser,
 	#instVars : [
 		'commonSubExpressions',
@@ -31,30 +31,30 @@ Class {
 }
 
 { #category : #private }
-SoGVN >> allSubNodesConstants: node [
+SoGlobalVariableNumbering >> allSubNodesConstants: node [
 	"Constants are immutable and can't be become"
 	^ node subNodes allSatisfy: [ :sub | sub isConstant ]
 ]
 
 { #category : #private }
-SoGVN >> allSubNodesSmiConstants: node [
+SoGlobalVariableNumbering >> allSubNodesSmiConstants: node [
 	^ node subNodes allSatisfy: [ :sub | sub isSmiConstant ]
 ]
 
 { #category : #accessing }
-SoGVN >> branchesToReprocess [
+SoGlobalVariableNumbering >> branchesToReprocess [
 	<generated>
 	^ branchesToReprocess
 ]
 
 { #category : #accessing }
-SoGVN >> branchesToReprocess: aValue [
+SoGlobalVariableNumbering >> branchesToReprocess: aValue [
 	<generated>
 	branchesToReprocess := aValue
 ]
 
 { #category : #private }
-SoGVN >> commonSubEx: expr againstAll: listOfExpr [
+SoGlobalVariableNumbering >> commonSubEx: expr againstAll: listOfExpr [
 	| found |
 	found := false.
 	listOfExpr do: 
@@ -69,19 +69,19 @@ SoGVN >> commonSubEx: expr againstAll: listOfExpr [
 ]
 
 { #category : #accessing }
-SoGVN >> commonSubExpressions [
+SoGlobalVariableNumbering >> commonSubExpressions [
 	<generated>
 	^ commonSubExpressions
 ]
 
 { #category : #accessing }
-SoGVN >> commonSubExpressions: aValue [
+SoGlobalVariableNumbering >> commonSubExpressions: aValue [
 	<generated>
 	commonSubExpressions := aValue
 ]
 
 { #category : #private }
-SoGVN >> cse: op [
+SoGlobalVariableNumbering >> cse: op [
 	"Avoid issue with branch pipelining"
 	op isSmiCompOp ifTrue: [ ^self ].
 	commonSubExpressions
@@ -91,40 +91,39 @@ SoGVN >> cse: op [
 ]
 
 { #category : #initialization }
-SoGVN >> initialize [
+SoGlobalVariableNumbering >> initialize [
 
 	super initialize.
-
 	commonSubExpressions := Dictionary new.
 	branchesToReprocess := OrderedCollection new.
 	phiSimplifier := SoSimplifyPhis new.
 ]
 
 { #category : #private }
-SoGVN >> isPrimitiveFailToken: anObject [
+SoGlobalVariableNumbering >> isPrimitiveFailToken: anObject [
 	^ (Smalltalk version includesSubString: 'Squeak')
 		ifTrue: [ thisContext isPrimFailToken: anObject ]
 		ifFalse: [ thisContext isFailToken: anObject ]
 ]
 
 { #category : #modules }
-SoGVN >> maybeArrayCopy: send [
+SoGlobalVariableNumbering >> maybeArrayCopy: send [
 	^ SoArrayCopyStub new maybeArrayCopy: send
 ]
 
 { #category : #traversing }
-SoGVN >> maybeRemoveNilInit: new through: indexes [
+SoGlobalVariableNumbering >> maybeRemoveNilInit: new through: indexes [
 	new receiver constant instSize = indexes size
 		ifTrue: [ new nilInit: false ]
 ]
 
 { #category : #modules }
-SoGVN >> maybeStringEqual: send [
+SoGlobalVariableNumbering >> maybeStringEqual: send [
 	^ SoStringEqualStub new maybeStringEqual: send
 ]
 
 { #category : #private }
-SoGVN >> mergeComparisonWithArg1: op [ 
+SoGlobalVariableNumbering >> mergeComparisonWithArg1: op [ 
 	"For each variable n and constant a,b ;
 	(b < (n+a)) => ((b-a) < n)
 	overflow check:
@@ -147,7 +146,7 @@ SoGVN >> mergeComparisonWithArg1: op [
 ]
 
 { #category : #private }
-SoGVN >> mergeComparisonWithReceiver: op [ 
+SoGlobalVariableNumbering >> mergeComparisonWithReceiver: op [ 
 	"For each variable n and constant a,b ;
 	((n+a) < b) => (n < (b-a))
 	overflow check:
@@ -169,7 +168,7 @@ SoGVN >> mergeComparisonWithReceiver: op [
 ]
 
 { #category : #private }
-SoGVN >> mergeSmiAdd: op [
+SoGlobalVariableNumbering >> mergeSmiAdd: op [
 	"For each variable n and constant a,b ;
 	((n+a)+b) => (n+(a+b))
 	Handles overflow:
@@ -190,32 +189,32 @@ SoGVN >> mergeSmiAdd: op [
 ]
 
 { #category : #accessing }
-SoGVN >> phiSimplifier [
+SoGlobalVariableNumbering >> phiSimplifier [
 	<generated>
 	^ phiSimplifier
 ]
 
 { #category : #accessing }
-SoGVN >> phiSimplifier: aValue [
+SoGlobalVariableNumbering >> phiSimplifier: aValue [
 	<generated>
 	phiSimplifier := aValue
 ]
 
 { #category : #traversing }
-SoGVN >> removeChecks: store [
+SoGlobalVariableNumbering >> removeChecks: store [
 	store removeDeoptInfo.
 	store ignoreStoreCheck: true 
 ]
 
 { #category : #private }
-SoGVN >> removeFromCS: op [
+SoGlobalVariableNumbering >> removeFromCS: op [
 	commonSubExpressions
 			at: op receiver
 			ifPresent: [ :elem | elem remove: op ifAbsent: nil ]
 ]
 
 { #category : #traversing }
-SoGVN >> removeStoreChecks: new [
+SoGlobalVariableNumbering >> removeStoreChecks: new [
 	| instr indexes |
 	instr := new.
 	indexes := Set new.
@@ -227,13 +226,13 @@ SoGVN >> removeStoreChecks: new [
 ]
 
 { #category : #public }
-SoGVN >> runOn: codeNode [
+SoGlobalVariableNumbering >> runOn: codeNode [
 	self traversePreorderCode: codeNode.
 	self reprocessBranches.
 ]
 
 { #category : #private }
-SoGVN >> sparseConditionalElimination: branch [
+SoGlobalVariableNumbering >> sparseConditionalElimination: branch [
 	"| var constant dom |
 	1halt.
 	branch expression firstArg isSmiConstant ifTrue: [ 
@@ -253,12 +252,12 @@ SoGVN >> sparseConditionalElimination: branch [
 ]
 
 { #category : #private }
-SoGVN >> statifyOp: op [
+SoGlobalVariableNumbering >> statifyOp: op [
 	op removeAndReplaceUsesBy: op computeStatically
 ]
 
 { #category : #traversing }
-SoGVN >> traverseAccessingOp: op [
+SoGlobalVariableNumbering >> traverseAccessingOp: op [
 	op arguments size = 2 ifTrue: [ ^ self ].
 	"At"
 	op uses ifEmpty: [ ^ op removeInstruction ].
@@ -270,17 +269,17 @@ SoGVN >> traverseAccessingOp: op [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseArrayCopyOp: arrayCopy [
+SoGlobalVariableNumbering >> traverseArrayCopyOp: arrayCopy [
 	
 ]
 
 { #category : #traversing }
-SoGVN >> traverseBackjump: bj [
+SoGlobalVariableNumbering >> traverseBackjump: bj [
 	
 ]
 
 { #category : #traversing }
-SoGVN >> traverseBooleanBranch: branch [
+SoGlobalVariableNumbering >> traverseBooleanBranch: branch [
 	((branch expression typeInformationAt: branch)
 		isOnlyTypes: { True . False }) ifFalse: [ ^ self ].
 	branch removeDeoptInfo.
@@ -308,7 +307,7 @@ SoGVN >> traverseBooleanBranch: branch [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseBranchIfNotInstanceOf: branch [
+SoGlobalVariableNumbering >> traverseBranchIfNotInstanceOf: branch [
 	| type |
 	type := branch expression typeInformationAt: branch.
 	type isKnownType
@@ -320,7 +319,7 @@ SoGVN >> traverseBranchIfNotInstanceOf: branch [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseByteEqualOp: op [
+SoGlobalVariableNumbering >> traverseByteEqualOp: op [
 	| arg2 |
 	arg2 := op arguments at: 2.
 	(arg2 isConstant and: [arg2 constant = 0]) ifTrue: [ 
@@ -329,7 +328,7 @@ SoGVN >> traverseByteEqualOp: op [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseClassOp: op [
+SoGlobalVariableNumbering >> traverseClassOp: op [
 	| type |
 	type := op receiver typeInformationAt: op.
 	type hasOneType ifTrue: 
@@ -339,7 +338,7 @@ SoGVN >> traverseClassOp: op [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseCreateArray: array [
+SoGlobalVariableNumbering >> traverseCreateArray: array [
 	(array uses allSatisfy: [ :use | use isSunkObject or: [ use isAt or: [ use isSizeOp ] ] ]) ifFalse: [ ^ self ].
 	array uses copy do: [ :each |
 		each isAt ifTrue: [ each firstArg isSmiConstant ifTrue: [ 
@@ -349,12 +348,12 @@ SoGVN >> traverseCreateArray: array [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseCreateFullBlock: block [
+SoGlobalVariableNumbering >> traverseCreateFullBlock: block [
 	self traverseCreateNode: block sunkObject: block asSunkClosure 
 ]
 
 { #category : #traversing }
-SoGVN >> traverseCreateNode: obj sunkObject: sunkObj [
+SoGlobalVariableNumbering >> traverseCreateNode: obj sunkObject: sunkObj [
 	obj uses ifEmpty: [ ^ obj removeInstruction ].
 	(obj uses allSatisfy: [ :use | use isSunkObject ]) ifFalse: [ ^ self ].
 	obj removeInstruction.
@@ -365,12 +364,12 @@ SoGVN >> traverseCreateNode: obj sunkObject: sunkObj [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseCreateTempVect: tempVect [
+SoGlobalVariableNumbering >> traverseCreateTempVect: tempVect [
 	self traverseCreateNode: tempVect sunkObject: tempVect asSunkVector
 ]
 
 { #category : #traversing }
-SoGVN >> traverseEnsureEnoughSpace: instr [
+SoGlobalVariableNumbering >> traverseEnsureEnoughSpace: instr [
 	| backwardInstr |
 	backwardInstr := instr prevInstr.
 	[ backwardInstr ifNil: [ ^ self ].
@@ -382,24 +381,24 @@ SoGVN >> traverseEnsureEnoughSpace: instr [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseHeapAccess: access [
+SoGlobalVariableNumbering >> traverseHeapAccess: access [
 	access isWrite ifTrue: [ ^ self ].
 	access uses ifEmpty: [ access removeInstruction ]
 ]
 
 { #category : #traversing }
-SoGVN >> traverseInstantiationOp: op [
+SoGlobalVariableNumbering >> traverseInstantiationOp: op [
 	self removeStoreChecks: op.
 	op uses size = 0 ifTrue: [ op removeInstruction ]
 ]
 
 { #category : #traversing }
-SoGVN >> traversePhi: phi [
+SoGlobalVariableNumbering >> traversePhi: phi [
 	phiSimplifier simplifyPhis: (OrderedCollection with: phi)
 ]
 
 { #category : #traversing }
-SoGVN >> traverseSend: send [ 	
+SoGlobalVariableNumbering >> traverseSend: send [ 	
 	| primitive |
 	send canBeInlined ifFalse: [ ^ self ].
 	send methodToInline primitive = 117 ifTrue: [ ^ self maybeStringEqual: send ].
@@ -414,7 +413,7 @@ SoGVN >> traverseSend: send [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseSizeOp: op [
+SoGlobalVariableNumbering >> traverseSizeOp: op [
 	op receiver hasSizeInformation ifTrue: [ 
 		^op removeAndReplaceUsesBy: (SoConstant new 
 			constant: op receiver sizeInformation; 
@@ -423,7 +422,7 @@ SoGVN >> traverseSizeOp: op [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseSmiAddOp: op [
+SoGlobalVariableNumbering >> traverseSmiAddOp: op [
 	(op isUncheckedAddConstant and: [ op firstArg value = 0 ]) ifTrue: [ 
 		^ op removeAndReplaceUsesBy: op receiver ].
 	"Known bug: this interfers with CSE. Disabled.
@@ -433,7 +432,7 @@ SoGVN >> traverseSmiAddOp: op [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseSmiCompOp: op [
+SoGlobalVariableNumbering >> traverseSmiCompOp: op [
 	(self allSubNodesSmiConstants: op) ifTrue: [ ^ self replaceCompOp: op withBool: op computeStatically constant ].
 	"Known bug: this interfers with CSE. Disabled.
 	op receiver isUncheckedAddConstant
@@ -444,13 +443,13 @@ SoGVN >> traverseSmiCompOp: op [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseSmiOp: op [
+SoGlobalVariableNumbering >> traverseSmiOp: op [
 	(self allSubNodesSmiConstants: op) ifTrue: [ ^ self statifyOp: op ].
 	self unsafeOpGVN: op
 ]
 
 { #category : #traversing }
-SoGVN >> traverseTrapIfNotInstanceOf: trap [
+SoGlobalVariableNumbering >> traverseTrapIfNotInstanceOf: trap [
 	| type |
 	type := trap expression typeInformationAt: trap.
 	type isKnownType ifTrue: 
@@ -462,13 +461,13 @@ SoGVN >> traverseTrapIfNotInstanceOf: trap [
 ]
 
 { #category : #traversing }
-SoGVN >> traverseUnsafeOp: op [
+SoGlobalVariableNumbering >> traverseUnsafeOp: op [
 	(self allSubNodesConstants: op) ifTrue: [ ^ self statifyOp: op ].
 	self unsafeOpGVN: op
 ]
 
 { #category : #private }
-SoGVN >> tryPrimitive: primitive for: send [ 
+SoGlobalVariableNumbering >> tryPrimitive: primitive for: send [ 
 	| res |
 	res := send receiver constant tryPrimitive: primitive withArgs: (send arguments collect: [ :arg | arg constant ]).
 	(self isPrimitiveFailToken: res) ifTrue: [ ^ self ].
@@ -479,7 +478,7 @@ SoGVN >> tryPrimitive: primitive for: send [
 ]
 
 { #category : #private }
-SoGVN >> unsafeOpGVN: op [
+SoGlobalVariableNumbering >> unsafeOpGVN: op [
 	(op uses size = 0 and: [ op hasEffect not ]) ifTrue: [ ^ op removeInstruction ].
 	self cse: op
 ]
