@@ -174,7 +174,7 @@ SoAbsNode >> isMarker [
 
 { #category : #testing }
 SoAbsNode >> isNew [
-	<generated>
+
 	^ false
 ]
 

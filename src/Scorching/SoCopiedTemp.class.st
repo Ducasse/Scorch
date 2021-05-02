@@ -26,6 +26,6 @@ SoCopiedTemp >> index: aValue [
 
 { #category : #traversing }
 SoCopiedTemp >> isTraversedBy: aTraverser [
-	<generated>
+
 	^ aTraverser traverseCopiedTemp: self
 ]

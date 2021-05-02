@@ -26,19 +26,19 @@ SoAbsDeoptObject >> asObjectTemplate [
 
 { #category : #accessing }
 SoAbsDeoptObject >> marker [
-	<generated>
+
 	^ marker
 ]
 
 { #category : #accessing }
 SoAbsDeoptObject >> marker: aValue [
-	<generated>
+	
 	marker := aValue
 ]
 
 { #category : #accessing }
 SoAbsDeoptObject >> theClass [
-	<generated>
+	
 	^ theClass
 ]
 

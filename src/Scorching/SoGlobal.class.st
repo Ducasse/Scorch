@@ -43,6 +43,6 @@ SoGlobal >> isGlobal [
 
 { #category : #traversing }
 SoGlobal >> isTraversedBy: aTraverser [
-	<generated>
+
 	^ aTraverser traverseGlobal: self
 ]
