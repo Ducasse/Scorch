@@ -29,7 +29,7 @@ SoBlockDecompiler >> closureClass: compiledBlock ignoreOuterContext: ignoreOuter
 	nonLocalPhi ifNil: [ "Block nested in outer most method" ^ SoCreateContextFullBlock ].
 	callerDeoptInfo ifNil: [ ^SoCreateContextFullBlock ].
 	^ (SoBlockNonLocalReturnScanner scan: compiledBlock)
-		ifTrue: [ SoCreateNLRFullBlock ]
+		ifTrue: [ SoCreateNonLocalReturnFullBlock ]
 		ifFalse: [ SoCreateContextFullBlock ] 
 ]
 

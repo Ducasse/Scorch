@@ -212,7 +212,7 @@ SoDecompiler >> closureClass: compiledBlock ignoreOuterContext: ignoreOuterConte
 	ignoreOuterContext ifTrue: [ ^ SoCreateFullBlock ].
 	callerDeoptInfo ifNil: [ ^SoCreateContextFullBlock ].
 	^ (SoBlockNonLocalReturnScanner scan: compiledBlock)
-		ifTrue: [ SoCreateNLRFullBlock ]
+		ifTrue: [ SoCreateNonLocalReturnFullBlock ]
 		ifFalse: [ SoCreateContextFullBlock ] 
 ]
 

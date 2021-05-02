@@ -6,7 +6,7 @@ The fake constant is passed in a phi to mark where the NLRs should return to.
 nlrPhi <SoPhi> phi to return to if one inlines this NLR
 "
 Class {
-	#name : #SoCreateNLRFullBlock,
+	#name : #SoCreateNonLocalReturnFullBlock,
 	#superclass : #SoCreateContextFullBlock,
 	#instVars : [
 		'nlrPhi',
@@ -17,36 +17,36 @@ Class {
 }
 
 { #category : #accessing }
-SoCreateNLRFullBlock >> fakeBasicBlock [
+SoCreateNonLocalReturnFullBlock >> fakeBasicBlock [
 	<generated>
 	^ fakeBasicBlock
 ]
 
 { #category : #accessing }
-SoCreateNLRFullBlock >> fakeBasicBlock: aValue [
+SoCreateNonLocalReturnFullBlock >> fakeBasicBlock: aValue [
 	<generated>
 	fakeBasicBlock := aValue
 ]
 
 { #category : #accessing }
-SoCreateNLRFullBlock >> fakeConstant [
+SoCreateNonLocalReturnFullBlock >> fakeConstant [
 	<generated>
 	^ fakeConstant
 ]
 
 { #category : #accessing }
-SoCreateNLRFullBlock >> fakeConstant: aValue [
+SoCreateNonLocalReturnFullBlock >> fakeConstant: aValue [
 	<generated>
 	fakeConstant := aValue
 ]
 
 { #category : #testing }
-SoCreateNLRFullBlock >> hasNonLocalReturn [
+SoCreateNonLocalReturnFullBlock >> hasNonLocalReturn [
 	^ true
 ]
 
 { #category : #initialization }
-SoCreateNLRFullBlock >> initialize [
+SoCreateNonLocalReturnFullBlock >> initialize [
 
 	super initialize.
 
@@ -57,19 +57,19 @@ SoCreateNLRFullBlock >> initialize [
 ]
 
 { #category : #traversing }
-SoCreateNLRFullBlock >> isTraversedBy: aTraverser [
+SoCreateNonLocalReturnFullBlock >> isTraversedBy: aTraverser [
 	<generated>
 	^ aTraverser traverseCreateNLRFullBlock: self
 ]
 
 { #category : #accessing }
-SoCreateNLRFullBlock >> nlrPhi [
+SoCreateNonLocalReturnFullBlock >> nlrPhi [
 	<generated>
 	^ nlrPhi
 ]
 
 { #category : #accessing }
-SoCreateNLRFullBlock >> nlrPhi: aValue [
+SoCreateNonLocalReturnFullBlock >> nlrPhi: aValue [
 	<generated>
 	nlrPhi := aValue
 ]
