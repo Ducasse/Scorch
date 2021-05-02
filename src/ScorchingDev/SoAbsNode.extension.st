@@ -17,12 +17,14 @@ SoAbsNode >> debugUsesNoDeopt [
 
 { #category : #'*ScorchingDev' }
 SoAbsNode >> doesNotUnderstand: aMessage [
-	(aMessage selector beginsWith: 'is')
+	"(aMessage selector beginsWith: 'is')
 		ifFalse: [ ^ super doesNotUnderstand: aMessage ].
 	SoIsGenerator genIsMethodFrom: aMessage in: SoAbsNode.
 	(self respondsTo: aMessage selector)
 		ifFalse: [ ^ super doesNotUnderstand: aMessage ].
-	^ aMessage sentTo: self
+	^ aMessage sentTo: self"
+	
+	^ super doesNotUnderstand: aMessage
 ]
 
 { #category : #'*ScorchingDev' }
