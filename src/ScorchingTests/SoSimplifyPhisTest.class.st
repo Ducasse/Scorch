@@ -14,6 +14,12 @@ SoSimplifyPhisTest >> passClass [
 ]
 
 { #category : #helpers }
+SoSimplifyPhisTest >> passClasses [
+
+	^ { SoReorderBasicBlocks . SoSimpleFindDominators . SoSimplifyPhis }
+]
+
+{ #category : #helpers }
 SoSimplifyPhisTest >> runOnSoMethod: soMethod [
 	
 	| currentPass |
@@ -26,7 +32,7 @@ SoSimplifyPhisTest >> runOnSoMethod: soMethod [
 { #category : #helpers }
 SoSimplifyPhisTest >> testBasicNoReorderSmoke [
 
-	|  so |
+	| so |
 	so := self soMethodOf: (SoExamples>> #iv2).
 	self runOnSoMethod: so.
 ]

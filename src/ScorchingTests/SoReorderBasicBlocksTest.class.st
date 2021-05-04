@@ -10,6 +10,12 @@ SoReorderBasicBlocksTest >> passClass [
 	^ SoReorderBasicBlocks
 ]
 
+{ #category : #helpers }
+SoReorderBasicBlocksTest >> passClasses [
+
+	^ { SoReorderBasicBlocks} 
+]
+
 { #category : #'tests - no reordering' }
 SoReorderBasicBlocksTest >> testBasicNoReorder [
 

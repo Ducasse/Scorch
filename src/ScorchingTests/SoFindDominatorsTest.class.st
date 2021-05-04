@@ -12,7 +12,8 @@ Class {
 		'b7',
 		'b8',
 		'b9',
-		'passClass'
+		'passClass',
+		'passClasses'
 	],
 	#category : #'ScorchingTests-NewUnit'
 }
@@ -21,21 +22,27 @@ Class {
 SoFindDominatorsTest class >> testParameters [
 
 	^ ParametrizedTestMatrix new
-		addCase: { #passClass -> SoSimpleFindDominators };
-		addCase: { #passClass -> SoRobustFindDominators };
+		addCase: { #passClasses -> {SoSimpleFindDominators} };
+		addCase: { #passClasses -> {SoRobustFindDominators} };
 		yourself
 ]
 
 { #category : #running }
-SoFindDominatorsTest >> passClass [
+SoFindDominatorsTest >> pass [ 
 
-	^ passClass
+	^ passes first  
 ]
 
 { #category : #running }
-SoFindDominatorsTest >> passClass: aPassClass [
+SoFindDominatorsTest >> passClasses [
 
-	passClass := aPassClass
+	^ passClasses
+]
+
+{ #category : #running }
+SoFindDominatorsTest >> passClasses: aPassClasses [
+
+	passClasses := aPassClasses
 ]
 
 { #category : #running }
@@ -91,18 +98,18 @@ SoFindDominatorsTest >> setUp [
 { #category : #running }
 SoFindDominatorsTest >> testDominator [
 
-	pass numberBasicBlocks: builder codeNode basicBlocks.
-	pass computeDominators: builder codeNode basicBlocks.
+	self pass numberBasicBlocks: builder codeNode basicBlocks.
+	self pass computeDominators: builder codeNode basicBlocks.
 	
-	self assertCollection: (pass dominatorsOf: b1) hasSameElements: { b1 }.
-	self assertCollection: (pass dominatorsOf: b2) hasSameElements: { b1 . b2 }.
-	self assertCollection: (pass dominatorsOf: b3) hasSameElements: { b1 . b2 . b3 }.
-	self assertCollection: (pass dominatorsOf: b4) hasSameElements: { b1 . b2 . b4 }.
-	self assertCollection: (pass dominatorsOf: b5) hasSameElements: { b1 . b2 . b4 . b5 }.
-	self assertCollection: (pass dominatorsOf: b6) hasSameElements: { b1 . b2 . b6 }.
-	self assertCollection: (pass dominatorsOf: b7) hasSameElements: { b1 . b2 . b6 . b7 }.
-	self assertCollection: (pass dominatorsOf: b8) hasSameElements: { b1 . b2 . b6 . b8 }.
-	self assertCollection: (pass dominatorsOf: b9) hasSameElements: { b1 . b2 . b6 . b9 }.
+	self assertCollection: (self pass dominatorsOf: b1) hasSameElements: { b1 }.
+	self assertCollection: (self pass dominatorsOf: b2) hasSameElements: { b1 . b2 }.
+	self assertCollection: (self pass dominatorsOf: b3) hasSameElements: { b1 . b2 . b3 }.
+	self assertCollection: (self pass dominatorsOf: b4) hasSameElements: { b1 . b2 . b4 }.
+	self assertCollection: (self pass dominatorsOf: b5) hasSameElements: { b1 . b2 . b4 . b5 }.
+	self assertCollection: (self pass dominatorsOf: b6) hasSameElements: { b1 . b2 . b6 }.
+	self assertCollection: (self pass dominatorsOf: b7) hasSameElements: { b1 . b2 . b6 . b7 }.
+	self assertCollection: (self pass dominatorsOf: b8) hasSameElements: { b1 . b2 . b6 . b8 }.
+	self assertCollection: (self pass dominatorsOf: b9) hasSameElements: { b1 . b2 . b6 . b9 }.
 ]
 
 { #category : #running }
@@ -124,7 +131,7 @@ SoFindDominatorsTest >> testImmediateDominator [
 { #category : #running }
 SoFindDominatorsTest >> testImmediateDominatorShufflingOrder [
 
-	pass supportsRandomBlockOrder ifFalse: [ ^ self skip ].
+	self pass supportsRandomBlockOrder ifFalse: [ ^ self skip ].
 
 	builder codeNode basicBlocks shuffle.
 	self runOnSoMethod: builder codeNode.

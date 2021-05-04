@@ -2,10 +2,17 @@ Class {
 	#name : #SoPassTest,
 	#superclass : #ParametrizedTestCase,
 	#instVars : [
-		'pass'
+		'pass',
+		'passes'
 	],
 	#category : #'ScorchingTests-NewUnit'
 }
+
+{ #category : #helpers }
+SoPassTest >> passClasses [
+
+	^ #()
+]
 
 { #category : #helpers }
 SoPassTest >> runFor: aCompiledMethod [
@@ -19,14 +26,14 @@ SoPassTest >> runFor: aCompiledMethod [
 { #category : #helpers }
 SoPassTest >> runOnSoMethod: soMethod [
 
-	pass runOn: soMethod
+	passes do: [ :each | each runOn: soMethod ]
 ]
 
 { #category : #helpers }
 SoPassTest >> setUp [
 
 	super setUp.
-	pass := self passClass new.
+	passes := self passClasses collect: [ :each | each new ]
 ]
 
 { #category : #helpers }
